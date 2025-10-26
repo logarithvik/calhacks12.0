@@ -1,0 +1,133 @@
+Here is a comprehensive, layperson-friendly summary of the clinical trial protocol for patients and the general public, formatted according to your example:
+
+### Video Outline: Evinacumab Clinical Trial (Severe Hypertriglyceridemia)
+
+---
+**Category: Significance**
+---
+**Content:**
+Severe hypertriglyceridemia (sHTG), or very high triglyceride levels in the blood, is a serious condition that significantly increases the risk of acute pancreatitis (AP). Attacks of acute pancreatitis are painful and often require hospitalization, and once you've had one, you're at a much higher risk for future attacks. Current medications and lifestyle changes are often not enough to lower triglyceride levels sufficiently to prevent these dangerous recurrences. It's estimated that about 6,300 adults in the US alone face this high risk. This study aims to find a new, more effective way to reduce triglycerides and prevent these life-threatening pancreatitis attacks, addressing a critical unmet medical need.
+
+**Duration of Video:** 10-15 sec
+**Agent Functions:**
+- Generate graph and statistics visualization showing the prevalence of sHTG and AP recurrence.
+- Display text: "High Triglycerides ➝ Acute Pancreatitis ➝ Hospitalization & Recurrence Risk."
+
+---
+**Category: Purpose of the Study**
+---
+**Content:**
+This study is testing an investigational medicine called **evinacumab (REGN1500)**. Evinacumab is a specially designed antibody that targets a protein in your body called **ANGPTL3**. Normally, ANGPTL3 acts like a "brake" on another enzyme called **lipoprotein lipase (LPL)**, which is responsible for breaking down triglycerides in your blood. By blocking ANGPTL3, evinacumab essentially "releases the brakes" on LPL, helping it to work more effectively and significantly lower triglyceride levels.
+
+The main goal of this Phase 2b study is to determine if evinacumab can prevent repeated attacks of acute pancreatitis in adults who have very high triglyceride levels, a history of pancreatitis linked to these high levels, and who do not have a specific genetic condition affecting their LPL enzyme (called Familial Chylomicronemia Syndrome, or FCS). We also want to understand its effects on other lipid levels and its safety.
+
+**Duration of Video:** 15-20 sec
+**Agent Functions:**
+- Generate narrated explanation with visuals of ANGPTL3/LPL mechanism (e.g., ANGPTL3 as a "brake," LPL as a "worker," evinacumab as a "blocker" for the brake).
+- Create generative video/images illustrating the biological process of triglyceride breakdown and evinacumab's action.
+- Display text: "Evinacumab: A New Approach to Lower Triglycerides & Prevent Pancreatitis."
+
+---
+**Category: Who Can Participate**
+---
+**Content:**
+We are looking for approximately 120 adult participants, aged 18 to 80 years old, for this study.
+
+**You may be able to participate if you:**
+- Have very high triglyceride levels AND a history of acute pancreatitis linked to these high levels within the past 2 years.
+- Specifically, your fasting triglyceride levels at screening must be:
+    - Over 880 mg/dL with one past pancreatitis attack, OR
+    - Over 500 mg/dL with two or more past pancreatitis attacks, OR
+    - Over 500 mg/dL with a documented prior level over 1000 mg/dL AND one or more past pancreatitis attacks.
+- Do NOT have Familial Chylomicronemia Syndrome (FCS) caused by specific "loss of function" genetic mutations in the LPL gene.
+- Are on a stable dose of triglyceride-lowering medications (like statins or fibrates) for at least 8 weeks and plan to continue them.
+- Are willing to maintain a stable diet and limit alcohol intake (no more than 1 drink per day).
+
+**You would NOT be eligible if you have:**
+- Been hospitalized for acute pancreatitis in the last 4 weeks.
+- A known history of severe allergic reactions to evinacumab or its components.
+- Certain uncontrolled medical conditions, such as specific types of diabetes, severe kidney, or liver disease.
+- Are pregnant, breastfeeding, or unwilling to use highly effective birth control if you are a woman who could become pregnant.
+- Received a COVID-19 vaccination within 1 week of the planned start of study medication.
+
+**Duration of Video:** 15-20 sec
+**Agent Functions:**
+- Display brief diagram or infographic summarizing key eligibility criteria (age, TG levels, AP history, no FCS).
+- Briefly list common exclusion types as bullet points.
+
+---
+**Category: What Participation Involves**
+---
+**Content:**
+Your participation in this study would last for approximately 72 weeks (about 1.5 years), including screening, a treatment period, and a follow-up period.
+
+-   **Screening Period (Up to 4 weeks):** This involves 1 visit for a thorough medical history review, physical exam, blood tests (including genetic testing to rule out FCS), and initial triglyceride measurements to confirm your eligibility.
+-   **Treatment Period (Approximately 12 months / 52 weeks):** If eligible, you'll be randomly assigned (like flipping a coin) to receive either evinacumab or a placebo (an inactive substance) in a 1:1 ratio. Neither you nor your study doctor will know which you are receiving – this is called a "double-blind" study. You'll receive the study drug (evinacumab or placebo) as an intravenous (IV) infusion every 4 weeks (about 13 infusions in total). Each infusion will take about 1 hour, followed by at least 1 hour of monitoring at the clinic. You will have regular in-clinic visits for physical exams, vital signs, ECGs, blood tests (for lipids, drug levels, and safety), and questionnaires about abdominal pain. Fasting will be required for some blood samples.
+-   **Follow-up Period (Approximately 5 months / 20 weeks):** After the treatment period, you will have 2 additional in-clinic visits over about 5 months to continue monitoring your health and safety without the study drug.
+
+Throughout the study, you'll be asked to adhere to your stable diet and lifestyle habits, including your triglyceride-lowering medications.
+
+**Duration of Video:** 20-25 sec
+**Agent Functions:**
+- Create study flowchart or animated diagram summarizing timeline and stages (Screening, Treatment, Follow-up).
+- Clearly highlight the random assignment and double-blind nature of the study.
+- Show a visual representation of an IV infusion and clinic visits.
+
+---
+**Category: Possible Benefits**
+---
+**Content:**
+-   The investigational drug, evinacumab, may help reduce your very high triglyceride levels, potentially lowering your risk of repeated acute pancreatitis attacks.
+-   Previous studies of evinacumab showed significant triglyceride reductions (around 80% in similar patient groups without FCS), which suggests a strong potential to control your condition.
+-   You will receive extensive medical care and close monitoring of your health throughout the study by a dedicated team, at no cost to you.
+-   Your participation will provide valuable information that could help others with severe hypertriglyceridemia and a history of pancreatitis in the future.
+
+**Duration of Video:** 10-15 sec
+**Agent Functions:**
+- Generate reassuring narrative with supportive visuals of triglyceride reduction and clinical care.
+- Display text summary of benefits on screen.
+
+---
+**Category: Possible Side Effects**
+---
+**Content:**
+All medications, including investigational ones, can have side effects. While evinacumab has been generally well-tolerated in previous studies, it's important to be aware of potential risks.
+
+Possible side effects observed or considered important include:
+-   **Infusion reactions and allergic reactions:** These can occur during or shortly after the infusion and may include symptoms like rash, itching, hives, sweating, low blood pressure, or shortness of breath. In rare cases, a severe, life-threatening allergic reaction (anaphylaxis) has been reported. The study team is trained and equipped to manage these reactions immediately.
+-   **Common side effects (from a previous study):** Abdominal pain, headache, and constipation were reported more frequently in patients receiving evinacumab.
+-   **Liver problems:** Potential for changes in liver enzyme levels, which will be carefully monitored through blood tests.
+-   **Immunogenicity:** Your body might develop antibodies against evinacumab, which could affect how the drug works. This will be monitored, though it has not been commonly observed in previous studies.
+-   **Risks to an unborn baby:** Based on animal studies, evinacumab may harm a fetus, which is why pregnant women cannot participate.
+
+The study team will carefully monitor you for any side effects throughout your participation. If you experience any side effects, you should report them immediately to the study team. If side effects are unbearable or severe, participants may stop the drug or receive alternative treatments at no cost.
+
+**Duration of Video:** 15-20 sec
+**Agent Functions:**
+- Display side effect list visually (text on screen).
+- Continue showing molecular mechanism visuals simplified for patient understanding.
+- Prompt study administrator for input on phrasing sensitive content.
+
+---
+**Category: Confidentiality and Ethics**
+---
+**Content:**
+This study is conducted with the highest ethical standards, adhering to international guidelines for Good Clinical Practice (GCP) and the Declaration of Helsinki. An independent committee (Institutional Review Board or Ethics Committee) has thoroughly reviewed and approved the study to ensure your rights, safety, and well-being are protected. Your personal health information will be kept strictly confidential, identified only by a unique study number, and your privacy will be maintained throughout and after the study. You will be asked to provide your informed consent before participating, meaning you will receive a full explanation of the study to help you decide if you wish to take part. Study results will also be made publicly available on clinical trial websites.
+
+**Duration of Video:** 10-15 sec
+**Agent Functions:**
+- Display ethics statement and reassurance visuals.
+- Optional link button to participant rights page.
+
+---
+**Category: Contact**
+---
+**Content:**
+This clinical trial is sponsored by **Regeneron Pharmaceuticals, Inc.** If you have any questions or concerns about this study, your rights as a participant, or if you are interested in learning more, please speak with your study doctor or the research team at your study site.
+
+**Duration of Video:** 7-10 sec
+**Agent Functions:**
+- Generate info screen with bolded sponsor and a clear call to action for participants.
+- Display administrator-provided contact details dynamically.
+
+---

@@ -1,0 +1,83 @@
+{
+  "segment_index": 2,
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"When Fats Get Too High\",\n      \"visual_assets\": [\n        {\n          \"name\": \"clogged blood vessel\",\n          \"style\": \"flat cartoon\",\n          \"purpose\": \"Illustrates severe hypertriglyceridemia with excess fat molecules\",\n          \"prompt\": \"simple flat cartoon of a blood vessel crowded with many small, round yellow fat molecules, like traffic jam\"\n        },\n        {\n          \"name\": \"inflamed pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents acute pancreatitis as a complication\",\n          \"prompt\": \"simple flat cartoon icon of an inflamed pancreas, red and slightly swollen, jagged edges\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Releasing the Body's Brake\",\n      \"visual_assets\": [\n        {\n          \"name\": \"LPL enzyme worker\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents the LPL enzyme breaking down fats\",\n          \"prompt\": \"simple flat cartoon icon of a blue enzyme 'worker' character actively breaking down small yellow fat circles\"\n        },\n        {\n          \"name\": \"ANGPTL3 brake molecule\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents ANGPTL3 slowing down LPL\",\n          \"prompt\": \"simple flat cartoon icon of a red 'brake' symbol or a hand pushing down, slowing movement\"\n        },\n        {\n          \"name\": \"fat molecule\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents triglycerides as targets for LPL\",\n          \"prompt\": \"simple flat cartoon icon of a small, round yellow fat molecule\"\n        },\n        {\n          \"name\": \"evinacumab medicine molecule\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents evinacumab blocking ANGPTL3\",\n          \"prompt\": \"simple flat cartoon icon of a blue medicine molecule, shaped like a key or block, interacting with the 'brake'\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Toward a Healthier Future\",\n      \"visual_assets\": [\n        {\n          \"name\": \"healthy person\",\n          \"style\": \"flat cartoon\",\n          \"purpose\": \"Represents improved patient health and well-being\",\n          \"prompt\": \"flat cartoon of a smiling, active person, simple outline, minimal detail, light colors\"\n        },\n        {\n          \"name\": \"clear blood vessel\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Symbolizes improved cardiovascular health and reduced triglyceride levels\",\n          \"prompt\": \"simple flat cartoon of a clear, smooth blood vessel, blue and red outlines, no blockages\"\n        },\n        {\n          \"name\": \"calm pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents reduced risk of pancreatitis\",\n          \"prompt\": \"simple flat cartoon icon of a healthy, calm pancreas, light green color, smooth edges\"\n        },\n        {\n          \"name\": \"upward trend graph\",\n          \"style\": \"flat infographic element\",\n          \"purpose\": \"Symbolizes positive progress towards better health or reduced risk\",\n          \"prompt\": \"simple flat cartoon graph with a gentle upward trend line and an upward arrow, light green colors\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "parsed_response": {
+    "segments": [
+      {
+        "section_title": "When Fats Get Too High",
+        "visual_assets": [
+          {
+            "name": "clogged blood vessel",
+            "style": "flat cartoon",
+            "purpose": "Illustrates severe hypertriglyceridemia with excess fat molecules",
+            "prompt": "simple flat cartoon of a blood vessel crowded with many small, round yellow fat molecules, like traffic jam"
+          },
+          {
+            "name": "inflamed pancreas",
+            "style": "minimal medical icon",
+            "purpose": "Represents acute pancreatitis as a complication",
+            "prompt": "simple flat cartoon icon of an inflamed pancreas, red and slightly swollen, jagged edges"
+          }
+        ]
+      },
+      {
+        "section_title": "Releasing the Body's Brake",
+        "visual_assets": [
+          {
+            "name": "LPL enzyme worker",
+            "style": "flat cartoon icon",
+            "purpose": "Represents the LPL enzyme breaking down fats",
+            "prompt": "simple flat cartoon icon of a blue enzyme 'worker' character actively breaking down small yellow fat circles"
+          },
+          {
+            "name": "ANGPTL3 brake molecule",
+            "style": "flat cartoon icon",
+            "purpose": "Represents ANGPTL3 slowing down LPL",
+            "prompt": "simple flat cartoon icon of a red 'brake' symbol or a hand pushing down, slowing movement"
+          },
+          {
+            "name": "fat molecule",
+            "style": "flat cartoon icon",
+            "purpose": "Represents triglycerides as targets for LPL",
+            "prompt": "simple flat cartoon icon of a small, round yellow fat molecule"
+          },
+          {
+            "name": "evinacumab medicine molecule",
+            "style": "flat cartoon icon",
+            "purpose": "Represents evinacumab blocking ANGPTL3",
+            "prompt": "simple flat cartoon icon of a blue medicine molecule, shaped like a key or block, interacting with the 'brake'"
+          }
+        ]
+      },
+      {
+        "section_title": "Toward a Healthier Future",
+        "visual_assets": [
+          {
+            "name": "healthy person",
+            "style": "flat cartoon",
+            "purpose": "Represents improved patient health and well-being",
+            "prompt": "flat cartoon of a smiling, active person, simple outline, minimal detail, light colors"
+          },
+          {
+            "name": "clear blood vessel",
+            "style": "minimal medical icon",
+            "purpose": "Symbolizes improved cardiovascular health and reduced triglyceride levels",
+            "prompt": "simple flat cartoon of a clear, smooth blood vessel, blue and red outlines, no blockages"
+          },
+          {
+            "name": "calm pancreas",
+            "style": "minimal medical icon",
+            "purpose": "Represents reduced risk of pancreatitis",
+            "prompt": "simple flat cartoon icon of a healthy, calm pancreas, light green color, smooth edges"
+          },
+          {
+            "name": "upward trend graph",
+            "style": "flat infographic element",
+            "purpose": "Symbolizes positive progress towards better health or reduced risk",
+            "prompt": "simple flat cartoon graph with a gentle upward trend line and an upward arrow, light green colors"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "segment_index": 0,
+  "raw_response": "```json\n{\n  \"visual_assets\": [\n    {\n      \"name\": \"blood vessel road\",\n      \"style\": \"flat cartoon illustration\",\n      \"purpose\": \"represents a blood vessel, like a road for molecules\",\n      \"prompt\": \"simple cartoon of a winding blood vessel, like a road, flat color, no shading\"\n    },\n    {\n      \"name\": \"fat molecules\",\n      \"style\": \"flat cartoon icon\",\n      \"purpose\": \"represents triglyceride molecules, like cars on the road\",\n      \"prompt\": \"small, yellow, circular fat molecules icon, flat cartoon, simple shapes, no details\"\n    },\n    {\n      \"name\": \"inflamed pancreas\",\n      \"style\": \"minimal medical icon\",\n      \"purpose\": \"symbolizes an inflamed pancreas (acute pancreatitis)\",\n      \"prompt\": \"simple cartoon icon of a pancreas, red and slightly swollen to show inflammation, flat color\"\n    }\n  ]\n}\n```",
+  "parsed_response": {
+    "visual_assets": [
+      {
+        "name": "blood vessel road",
+        "style": "flat cartoon illustration",
+        "purpose": "represents a blood vessel, like a road for molecules",
+        "prompt": "simple cartoon of a winding blood vessel, like a road, flat color, no shading"
+      },
+      {
+        "name": "fat molecules",
+        "style": "flat cartoon icon",
+        "purpose": "represents triglyceride molecules, like cars on the road",
+        "prompt": "small, yellow, circular fat molecules icon, flat cartoon, simple shapes, no details"
+      },
+      {
+        "name": "inflamed pancreas",
+        "style": "minimal medical icon",
+        "purpose": "symbolizes an inflamed pancreas (acute pancreatitis)",
+        "prompt": "simple cartoon icon of a pancreas, red and slightly swollen to show inflammation, flat color"
+      }
+    ]
+  }
+}

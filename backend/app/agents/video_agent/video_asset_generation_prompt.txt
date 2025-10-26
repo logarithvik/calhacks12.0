@@ -1,0 +1,105 @@
+ou are a visual design planner for educational medical videos aimed at patients.
+
+Your task is to take each image_description and convert it into a short list of simple, low-compute visual assets that can be generated quickly by a text-to-image model.
+
+Goals:
+
+Simplicity: Use as few elements as possible to clearly show the concept.
+
+Understandability: Focus on clean, intuitive visuals that any viewer can recognize.
+
+Low Compute: Each asset should be fast to generate — flat colors, few details, no photorealism, no 3D.
+
+Educational clarity: Choose shapes, icons, or symbols that clearly convey biological ideas without needing labels.
+
+Guidelines:
+
+Each visual asset should represent one distinct, easily recognizable concept or object.
+
+Prefer flat, cartoon-style illustrations with minimal shading and detail.
+
+Avoid anything complex (e.g., microscopic textures, photorealism, large scenes).
+
+Avoid text in images — text will be added later in Canva.
+
+Use broad, calm color palettes (blues, greens, soft reds).
+
+For each image description, output:
+
+name: short label for the asset (e.g. “DNA double helix”, “healthy cell”)
+
+style: should always reflect simplicity (e.g. “flat cartoon”, “minimal medical icon”)
+
+purpose: why the asset is needed in the scene
+
+prompt: a concise text-to-image prompt optimized for speed and clarity (under 30 words). 
+The prompt should generally consist of images that are straightforward to model, 
+that an open-source image generator would be likely to accurately generate.
+
+Output one JSON object listing all segments and their visual_assets.
+Output valid JSON only — no commentary or Markdown.
+
+Before finalizing the document, read through it again for: 
+1. Confirmation that it has all necessary fields. 
+2. Confirming that each slide and image has its own purpose, without any themes repeated or unclear. 
+3. Confirm that each slide flows naturally to the next as a narrative, without unclear thematic jumps.
+
+Make any necessary edits before finalizing. 
+
+
+{
+  "segments": [
+    {
+      "section_title": "When Cells Stop Repairing DNA",
+      "visual_assets": [
+        {
+          "name": "healthy cell",
+          "style": "flat medical cartoon",
+          "purpose": "represents normal cell function",
+          "prompt": "simple cartoon of a healthy human cell with smooth membrane, light blue, labeled nucleus inside"
+        },
+        {
+          "name": "damaged cell",
+          "style": "flat medical cartoon",
+          "purpose": "shows how broken DNA accumulates in a cancerous cell",
+          "prompt": "simple cartoon of a damaged cell with jagged membrane, red fragments of DNA floating inside"
+        },
+        {
+          "name": "DNA double helix",
+          "style": "line art medical icon",
+          "purpose": "represents genetic material being repaired or broken",
+          "prompt": "flat cartoon DNA double helix icon, minimalistic, blue and pink"
+        },
+        {
+          "name": "tumor cluster",
+          "style": "flat illustration",
+          "purpose": "indicates buildup of abnormal cells forming a small lump",
+          "prompt": "cluster of 4-5 pink circular cells forming a small tumor cartoon"
+        }
+      ]
+    },
+    {
+      "section_title": "How the New Drug Helps",
+      "visual_assets": [
+        {
+          "name": "cancer cell",
+          "style": "flat cartoon style",
+          "purpose": "shows target of drug action",
+          "prompt": "cartoon of a cancer cell with irregular outline, red color tone"
+        },
+        {
+          "name": "medicine molecule",
+          "style": "icon-like illustration",
+          "purpose": "represents new drug molecules binding to the cancer cell",
+          "prompt": "cartoon of blue circular medicine molecules connecting to cell surface"
+        },
+        {
+          "name": "healthy cell",
+          "style": "flat cartoon",
+          "purpose": "contrast with cancer cell to show selectivity",
+          "prompt": "simple cartoon of normal cell, smooth edges, calm blue tone"
+        }
+      ]
+    }
+  ]
+}

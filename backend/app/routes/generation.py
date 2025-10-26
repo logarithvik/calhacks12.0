@@ -10,8 +10,9 @@ from app.routes.auth import get_current_user
 from app.utils.file_utils import extract_text_from_pdf, get_file_extension
 
 # Import AI agents
-from app.agents import distill_agent, infographic_agent, video_agent
+from app.agents import distill_agent, infographic_agent
 from app.agents.distill_agent import distill_agent
+from app.agents.video_agent import video_agent
 
 router = APIRouter(prefix="/api/generate", tags=["generation"])
 
@@ -216,19 +217,30 @@ async def generate_video(
     
     try:
         import json
-        summary_data = json.loads(summary_content.content_text)
-        trial_data = summary_data.get("structured_data", {})
-        simple_text = summary_data.get("simple_summary", "")
+        import logging
         
-        # ===== CALL VIDEO AGENT =====
+        # Parse the summary content - it's now just plain text, not JSON
+        summary_text = summary_content.content_text
+        
+        # Update trial status
+        trial.status = "processing_video"
+        db.commit()
+        
+        logging.info(f"Starting video generation for trial {trial_id}")
+        
+        # ===== CALL VIDEO AGENT WITH COMPLETE WORKFLOW =====
         agent_input = {
-            "trial_data": trial_data,
-            "simple_text": simple_text,
+            "trial_data": {},  # We'll use the text-based summary
+            "simple_text": summary_text,
             "trial_id": trial_id,
             "duration": 90  # 90 second video
         }
         
         result = video_agent.run_agent(agent_input)
+        
+        # Check if video generation was successful
+        if result.get("status") != "success":
+            raise Exception(result.get("error", "Unknown error in video generation"))
         
         # Save to database
         existing_content = db.query(GeneratedContent).filter(
@@ -252,12 +264,19 @@ async def generate_video(
             )
             db.add(generated_content)
         
+        trial.status = "completed"
         db.commit()
         db.refresh(generated_content)
+        
+        logging.info(f"Video generation completed for trial {trial_id}")
         
         return generated_content
     
     except Exception as e:
+        import logging
+        logging.error(f"Error generating video for trial {trial_id}: {str(e)}")
+        trial.status = "error"
+        db.commit()
         raise HTTPException(status_code=500, detail=f"Error generating video: {str(e)}")
 
 

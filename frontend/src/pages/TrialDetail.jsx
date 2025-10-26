@@ -153,6 +153,7 @@ const TrialDetail = () => {
               hasContent={!!videoContent}
               isGenerating={generating.video}
               onGenerate={() => handleGenerate('video')}
+              onView={() => navigate(`/trial/${id}/video/${videoContent.id}`)}
               contentId={videoContent?.id}
               disabled={!summaryContent}
               disabledMessage="Generate summary first"
@@ -223,6 +224,7 @@ const GenerationCard = ({
   isGenerating, 
   onGenerate, 
   onEdit,
+  onView,
   contentId,
   disabled,
   disabledMessage 
@@ -243,15 +245,26 @@ const GenerationCard = ({
         </div>
       )}
       
-      {hasContent && onEdit ? (
+      {hasContent && (onEdit || onView) ? (
         <div className="space-y-2">
-          <button
-            onClick={onEdit}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
-          >
-            <FileText className="w-5 h-5" />
-            <span>Edit Summary</span>
-          </button>
+          {onEdit && (
+            <button
+              onClick={onEdit}
+              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+            >
+              <FileText className="w-5 h-5" />
+              <span>Edit Summary</span>
+            </button>
+          )}
+          {onView && (
+            <button
+              onClick={onView}
+              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+            >
+              <Video className="w-5 h-5" />
+              <span>View Video</span>
+            </button>
+          )}
           <button
             onClick={onGenerate}
             disabled={isGenerating}

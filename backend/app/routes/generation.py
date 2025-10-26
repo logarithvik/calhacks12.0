@@ -1,4 +1,3 @@
-from app.agents import distill_agent
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import Dict, Any
@@ -10,7 +9,7 @@ from app.routes.auth import get_current_user
 from app.utils.file_utils import extract_text_from_pdf, get_file_extension
 
 # Import AI agents
-from app.agents import infographic_agent, video_agent
+from app.agents import distill_agent, infographic_agent, video_agent
 
 router = APIRouter(prefix="/api/generate", tags=["generation"])
 
@@ -68,22 +67,19 @@ async def generate_summary(
             "trial_id": trial_id
         }
         
-
-        # Run the distillation agent which now returns a plain-text patient-friendly summary
-        # (the agent implementation should return a single string)
-        extracted_text = distill_agent.DistillAgent().run(agent_input)
-
-        # Save to database and as a plain .txt file so reviewers can open it directly
-        import os
-        uploads_dir = os.path.join("uploads", "generated")
-        os.makedirs(uploads_dir, exist_ok=True)
-        filename = f"summary_trial_{trial_id}_v1.txt"
-        file_path = os.path.join(uploads_dir, filename)
-
-        # extracted_text is expected to be plain text
-        content_text = extracted_text if isinstance(extracted_text, str) else str(extracted_text)
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(content_text)
+        extracted_data = distill_agent.run_agent(agent_input)
+        
+        # Generate patient-friendly text
+        simple_text = distill_agent.simplify_for_patients(extracted_data)
+        
+        # Save to database
+        import json
+        
+        # Store both structured data and simple text
+        content_text = json.dumps({
+            "structured_data": extracted_data,
+            "simple_summary": simple_text
+        })
         
         # Check if summary already exists
         existing_content = db.query(GeneratedContent).filter(
@@ -92,18 +88,16 @@ async def generate_summary(
         ).first()
         
         if existing_content:
-            # Update existing summary
+            # Update existing
             existing_content.content_text = content_text
-            existing_content.content_file_path = file_path
             existing_content.version += 1
             generated_content = existing_content
         else:
-            # Create new summary record
+            # Create new
             generated_content = GeneratedContent(
                 trial_id=trial_id,
                 content_type="summary",
-                content_text=content_text,
-                content_file_path=file_path
+                content_text=content_text
             )
             db.add(generated_content)
         
@@ -154,17 +148,16 @@ async def generate_infographic(
     
     try:
         import json
-        # For infographic generation, read the plain-text summary (human readable)
-        trial_data_text = summary_content.content_text or ""
-        trial_data = {"summary_text": trial_data_text}
-
+        summary_data = json.loads(summary_content.content_text)
+        trial_data = summary_data.get("structured_data", {})
+        
         # ===== CALL INFOGRAPHIC AGENT =====
         agent_input = {
             "trial_data": trial_data,
             "trial_id": trial_id,
             "style": "modern"
         }
-
+        
         result = infographic_agent.run_agent(agent_input)
         
         # Save to database
@@ -230,10 +223,10 @@ async def generate_video(
     
     try:
         import json
-        # For video generation, use the plain summary text
-        simple_text = summary_content.content_text or ""
-        trial_data = {"summary_text": simple_text}
-
+        summary_data = json.loads(summary_content.content_text)
+        trial_data = summary_data.get("structured_data", {})
+        simple_text = summary_data.get("simple_summary", "")
+        
         # ===== CALL VIDEO AGENT =====
         agent_input = {
             "trial_data": trial_data,
@@ -241,7 +234,7 @@ async def generate_video(
             "trial_id": trial_id,
             "duration": 90  # 90 second video
         }
-
+        
         result = video_agent.run_agent(agent_input)
         
         # Save to database

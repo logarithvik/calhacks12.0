@@ -9,6 +9,12 @@ import textwrap
 import json
 import re
 
+# MoviePy (single import style works across versions)
+try:
+    from moviepy.editor import *
+except ImportError:
+    print("MoviePy not found. Please install it with: pip install moviepy")
+
 # compute output dirs
 output_dir = os.path.join(os.path.dirname(__file__), "output")
 mechanism_dir = os.path.join(output_dir, "mechanism_slides")
@@ -241,20 +247,19 @@ def parse_paper_file(path):
 
     return sections
 
-if __name__ == "__main__":
-    sample_path = os.path.join(os.path.dirname(__file__), "paper_1_sample.txt")
-    if not os.path.exists(sample_path):
-        raise SystemExit(f"sample text not found: {sample_path}")
-
-    sections = parse_paper_file(sample_path)
-    agent = AIVideoAgent(FISH_API_KEY)
-
-    # Generate slides based on content type
-    slide_paths = []
-    audio_paths = []
+def generate_video_with_slideshow(paper_path, use_tts=True):
+    """Generate video with slideshow-style timing."""
     
+    sections = parse_paper_file(paper_path)
+    agent = AIVideoAgent(FISH_API_KEY)
+    clips = []
+
     for i, section in enumerate(sections, start=1):
         print(f"\nProcessing section {i}: {section['title']}")
+        
+        # Calculate duration based on content length (roughly 2 words per second)
+        words = len(section['content'].split())
+        duration = max(5, min(20, words / 2.0))  # Between 5-20 seconds
         
         # Generate appropriate slide type
         if agent.is_mechanism_section(section["content"], section["title"]):
@@ -264,31 +269,36 @@ if __name__ == "__main__":
             print("→ Generating trial info slide")
             img_path = agent.generate_trial_slide(section["content"], i)
             
-        slide_paths.append(img_path)
+        # Generate audio if requested
+        if use_tts:
+            audio_out = os.path.join(output_dir, f"audio_{i}.wav")
+            print("→ Generating audio")
+            aud_path = agent.generate_audio(section["content"], audio_out)
+            
+            # Create clip with audio
+            clip = ImageClip(img_path).set_duration(duration)
+            audio = AudioFileClip(aud_path)
+            clip = clip.set_audio(audio)
+        else:
+            # Create clip without audio
+            clip = ImageClip(img_path).set_duration(duration)
+            
+        # Add fade effects
+        clip = clip.fadein(0.5).fadeout(0.5)
+        clips.append(clip)
+
+    # Combine all clips
+    final = concatenate_videoclips(clips, method="compose")
+    final_path = os.path.join(output_dir, "final_slideshow.mp4")
+    final.write_videofile(final_path, fps=24)
+    print(f"\n✅ Generated video: {final_path}")
+    return final_path
+
+if __name__ == "__main__":
+    sample_path = os.path.join(os.path.dirname(__file__), "paper_1_sample.txt")
+    if not os.path.exists(sample_path):
+        raise SystemExit(f"sample text not found: {sample_path}")
         
-        # Generate audio for all sections
-        audio_out = os.path.join(output_dir, f"audio_{i}.wav")
-        print(f"→ Generating audio")
-        aud_path = agent.generate_audio(section["content"], audio_out)
-        audio_paths.append(aud_path)
-
-    # Save manifest
-    manifest = {
-        "slides": [
-            {
-                "index": i,
-                "title": section["title"],
-                "type": "mechanism" if agent.is_mechanism_section(section["content"], section["title"]) else "trial",
-                "image": slide_paths[i-1],
-                "audio": audio_paths[i-1]
-            }
-            for i, section in enumerate(sections, start=1)
-        ]
-    }
-
-    manifest_path = os.path.join(output_dir, "slides_manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
-
-    print(f"\n✅ Generated {len(manifest['slides'])} slides + audio files")
-    print(f"✅ Manifest: {manifest_path}")
+    # Generate video with slideshow timing and TTS audio
+    final_path = generate_video_with_slideshow(sample_path, use_tts=True)
+    print("✅ Video generation complete!")

@@ -143,6 +143,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.example
+
 
 # Spyder project settings
 .spyderproject
@@ -206,7 +208,7 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-# --- ignore common large/binary files and folders (added) ---
+# --- ignore common large/binary files and folders ---
 # Archives and disk images
 *.zip
 *.tar
@@ -217,7 +219,7 @@ __marimo__/
 *.iso
 *.img
 
-# Media/video (often large)
+# Media/video files
 *.mp4
 *.mov
 *.avi
@@ -270,13 +272,9 @@ __marimo__/
 /tmp/
 /cache/
 
-# Node / frontend dependencies (can be large)
+# Node / frontend dependencies
 node_modules/
 
 # OS / IDE large caches
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
-
-# End of added large-file ignores

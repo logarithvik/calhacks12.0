@@ -43,7 +43,9 @@ const TrialDetail = () => {
       switch (type) {
         case 'summary':
           result = await generationAPI.generateSummary(id);
-          break;
+          // Redirect to edit page after summary generation
+          navigate(`/trial/${id}/summary/edit`);
+          return;
         case 'infographic':
           result = await generationAPI.generateInfographic(id);
           break;
@@ -126,6 +128,7 @@ const TrialDetail = () => {
               hasContent={!!summaryContent}
               isGenerating={generating.summary}
               onGenerate={() => handleGenerate('summary')}
+              onEdit={() => navigate(`/trial/${id}/summary/edit`)}
               contentId={summaryContent?.id}
             />
 
@@ -219,6 +222,7 @@ const GenerationCard = ({
   hasContent, 
   isGenerating, 
   onGenerate, 
+  onEdit,
   contentId,
   disabled,
   disabledMessage 
@@ -239,27 +243,53 @@ const GenerationCard = ({
         </div>
       )}
       
-      <button
-        onClick={onGenerate}
-        disabled={isGenerating || disabled}
-        className={`w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md transition-colors ${
-          disabled
-            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            : hasContent
-            ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-            : 'bg-indigo-600 text-white hover:bg-indigo-700'
-        }`}
-        title={disabled ? disabledMessage : ''}
-      >
-        {isGenerating ? (
-          <>
-            <Loader className="w-5 h-5 animate-spin" />
-            <span>Generating...</span>
-          </>
-        ) : (
-          <span>{hasContent ? 'Regenerate' : 'Generate'}</span>
-        )}
-      </button>
+      {hasContent && onEdit ? (
+        <div className="space-y-2">
+          <button
+            onClick={onEdit}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+          >
+            <FileText className="w-5 h-5" />
+            <span>Edit Summary</span>
+          </button>
+          <button
+            onClick={onGenerate}
+            disabled={isGenerating}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition-colors"
+          >
+            {isGenerating ? (
+              <>
+                <Loader className="w-5 h-5 animate-spin" />
+                <span>Generating...</span>
+              </>
+            ) : (
+              <span>Regenerate</span>
+            )}
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={onGenerate}
+          disabled={isGenerating || disabled}
+          className={`w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md transition-colors ${
+            disabled
+              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              : hasContent
+              ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
+              : 'bg-indigo-600 text-white hover:bg-indigo-700'
+          }`}
+          title={disabled ? disabledMessage : ''}
+        >
+          {isGenerating ? (
+            <>
+              <Loader className="w-5 h-5 animate-spin" />
+              <span>Generating...</span>
+            </>
+          ) : (
+            <span>{hasContent ? 'Regenerate' : 'Generate'}</span>
+          )}
+        </button>
+      )}
       
       {disabled && disabledMessage && (
         <p className="text-xs text-gray-500 mt-2 text-center">{disabledMessage}</p>

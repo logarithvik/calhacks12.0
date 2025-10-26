@@ -33,9 +33,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Ensure uploads directory exists
+os.makedirs(settings.upload_dir, exist_ok=True)
+os.makedirs(os.path.join(settings.upload_dir, "generated"), exist_ok=True)
+
 # Mount static files (for serving uploaded files and generated content)
-if os.path.exists(settings.upload_dir):
-    app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
+app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
 
 # Include routers
 app.include_router(auth.router)

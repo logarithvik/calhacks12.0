@@ -112,6 +112,13 @@ export const generationAPI = {
     const response = await api.get(`/api/generate/content/${contentId}/data`);
     return response.data;
   },
+
+  updateSummary: async (contentId, text) => {
+    const response = await api.put(`/api/generate/content/${contentId}`, {
+      content_text: text
+    });
+    return response.data;
+  },
 };
 
 export default api;

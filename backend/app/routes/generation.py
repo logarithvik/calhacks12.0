@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, Body
 from sqlalchemy.orm import Session
 from typing import Dict, Any
+from pydantic import BaseModel
 
 from app.database import get_db
 from app.models.models import User, Trial, GeneratedContent
@@ -10,8 +11,13 @@ from app.utils.file_utils import extract_text_from_pdf, get_file_extension
 
 # Import AI agents
 from app.agents import distill_agent, infographic_agent, video_agent
+from app.agents.distill_agent import distill_agent
 
 router = APIRouter(prefix="/api/generate", tags=["generation"])
+
+
+class ContentUpdate(BaseModel):
+    content_text: str
 
 
 @router.post("/summary/{trial_id}", response_model=GeneratedContentResponse)
@@ -66,40 +72,27 @@ async def generate_summary(
             "protocol_text": protocol_text,
             "trial_id": trial_id
         }
-        
-        extracted_data = distill_agent.run_agent(agent_input)
-        
-        # Generate patient-friendly text
-        simple_text = distill_agent.simplify_for_patients(extracted_data)
-        
-        # Save to database
-        import json
-        
-        # Store both structured data and simple text
-        content_text = json.dumps({
-            "structured_data": extracted_data,
-            "simple_summary": simple_text
-        })
-        
-        # Check if summary already exists
+
+        extracted_data = distill_agent.DistillAgent().run(agent_input)
+
         existing_content = db.query(GeneratedContent).filter(
             GeneratedContent.trial_id == trial_id,
             GeneratedContent.content_type == "summary"
         ).first()
-        
+
         if existing_content:
-            # Update existing
-            existing_content.content_text = content_text
-            existing_content.version += 1
-            generated_content = existing_content
+                # Update existing
+                existing_content.content_text = extracted_data
+                existing_content.version += 1
+                generated_content = existing_content
         else:
-            # Create new
-            generated_content = GeneratedContent(
-                trial_id=trial_id,
-                content_type="summary",
-                content_text=content_text
-            )
-            db.add(generated_content)
+                # Create new
+                generated_content = GeneratedContent(
+                        trial_id=trial_id,
+                        content_type="summary",
+                        content_text=extracted_data
+                )
+                db.add(generated_content)
         
         trial.status = "completed"
         db.commit()
@@ -311,3 +304,46 @@ async def get_content_data(
         response["file_url"] = content.file_url
     
     return response
+
+
+@router.put("/content/{content_id}", response_model=GeneratedContentResponse)
+async def update_content(
+    content_id: int,
+    update_data: ContentUpdate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Update the content text for generated content (e.g., edited summary).
+    """
+    
+    # Get the content and verify ownership
+    content = db.query(GeneratedContent).join(Trial).filter(
+        GeneratedContent.id == content_id,
+        Trial.user_id == current_user.id
+    ).first()
+    
+    if not content:
+        raise HTTPException(status_code=404, detail="Content not found")
+    
+    try:
+        # Update the content text
+        content.content_text = update_data.content_text
+        
+        # Also update the file if it exists
+        if content.content_file_path:
+            import os
+            with open(content.content_file_path, 'w', encoding='utf-8') as f:
+                f.write(update_data.content_text)
+        
+        # Increment version
+        content.version += 1
+        
+        db.commit()
+        db.refresh(content)
+        
+        return content
+    
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error updating content: {str(e)}")

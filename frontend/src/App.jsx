@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import TrialDetail from './pages/TrialDetail';
+import SummaryEdit from './pages/SummaryEdit';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -32,6 +33,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <TrialDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/trial/:id/summary/edit"
+              element={
+                <ProtectedRoute>
+                  <SummaryEdit />
                 </ProtectedRoute>
               }
             />

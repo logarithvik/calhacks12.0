@@ -168,23 +168,36 @@ class AIVideoAgent:
 
 def parse_paper_file(path):
     """Return list of sections: [{'title': str, 'content': str, 'agent_functions': str}, ...]"""
-    text = open(path, "r", encoding="utf-8").read()
-    parts = re.split(r"-{5,}", text)
+    def clean_content(s: str) -> str:
+        if not s:
+            return ""
+        # Remove literal escape sequences and actual newlines/returns/backslashes
+        s = s.replace('\\n', ' ').replace('\n', ' ').replace('\r', ' ').replace('\\', ' ')
+        # Collapse long separators (----...) and other repetitive punctuation
+        s = re.sub(r'-{2,}', ' ', s)
+        # Remove control / non-printable characters
+        s = ''.join(ch for ch in s if ch.isprintable())
+        # Normalize whitespace
+        s = re.sub(r'\s+', ' ', s).strip()
+        return s
+
+    raw = open(path, "r", encoding="utf-8").read()
+    parts = re.split(r"-{5,}", raw)
     sections = []
     for part in parts:
         if not part.strip():
             continue
         m_cat = re.search(r"Category:\s*(.+)", part)
-        title = m_cat.group(1).strip() if m_cat else "Section"
+        title = clean_content(m_cat.group(1)) if m_cat else "Section"
         m_cont = re.search(r"Content:\s*(.+?)(?:Duration|Agent Functions:|\Z)", part, flags=re.S)
-        content = m_cont.group(1).strip() if m_cont else ""
+        content = clean_content(m_cont.group(1)) if m_cont else ""
         m_af = re.search(r"Agent Functions:\s*(.+)", part, flags=re.S)
         agent_functions = ""
         if m_af:
-            agent_functions = m_af.group(1).strip()
+            agent_functions = clean_content(m_af.group(1))
+            # clean bullets and collapse into a single line
             agent_functions = re.sub(r"^\s*-\s*", "", agent_functions, flags=re.M)
             agent_functions = re.sub(r"\s+", " ", agent_functions).strip()
-        content = re.sub(r"\s+", " ", content).strip()
         if content:
             sections.append({"title": title, "content": content, "agent_functions": agent_functions})
     return sections

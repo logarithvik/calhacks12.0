@@ -1,3 +1,10 @@
+"""main.py replaced with test_main.py behavior.
+
+This file now implements the slideshow generation flow previously in
+`test_main.py` (visual slides + per-slide audio durations). If you need
+the original main.py back, check version control or `git checkout`.
+"""
+
 import os
 import requests
 import nltk
@@ -9,9 +16,18 @@ import textwrap
 import json
 import re
 
-# compute output dir locally
+# MoviePy (single import style works across versions)
+try:
+    from moviepy.editor import *
+except ImportError:
+    print("MoviePy not found. Please install it with: pip install moviepy")
+
+# compute output dirs
 output_dir = os.path.join(os.path.dirname(__file__), "output")
-os.makedirs(output_dir, exist_ok=True)
+mechanism_dir = os.path.join(output_dir, "mechanism_slides")
+trial_dir = os.path.join(output_dir, "trial_slides")
+for d in (output_dir, mechanism_dir, trial_dir):
+    os.makedirs(d, exist_ok=True)
 
 # Optional local TTS
 try:
@@ -32,62 +48,124 @@ USE_LOCAL_TTS = os.getenv("USE_LOCAL_TTS", "1") in ("1", "true", "True")
 
 nltk.download("punkt", quiet=True)
 
-
 class AIVideoAgent:
     def __init__(self, fish_key):
         self.fish_key = fish_key
         self.image_model = PollImage(width=1280, height=720, seed="random") if PollImage else None
 
-    def generate_images(self, prompts):
-        """Generate one PNG per prompt, return list of paths."""
-        paths = []
-        os.makedirs(output_dir, exist_ok=True)
-        for i, prompt in enumerate(prompts, start=1):
-            amoeba_style = (
-                "A colorful, cartoon-style educational illustration in the style of the Amoeba Sisters YouTube videos. "
-                "Use friendly rounded shapes, bright pastel colors, thick outlines, and simple cell-like characters with expressive faces. "
-                "The scene should explain a biological mechanism clearly using labeled arrows, minimal text, and a cheerful science-classroom tone. "
-                "Simple, uncluttered background focusing on clarity and visual humor."
-            )
-            full_prompt = f"{prompt}. {amoeba_style}"
-            path = os.path.join(output_dir, f"slide_{i}.png")
-            print(f"[Image] {i}/{len(prompts)}: {full_prompt[:200]}...")
-            try:
-                if self.image_model:
-                    try:
-                        self.image_model(full_prompt, save=True, file=path)
-                    except Exception:
-                        self.image_model(prompt=full_prompt, save=True, file=path)
-                    paths.append(path)
-                    continue
-                else:
-                    url = f"https://pollinations.ai/p/{requests.utils.quote(full_prompt)}?width=1280&height=720&nologo=true"
-                    r = requests.get(url, timeout=30)
-                    if r.status_code == 200:
-                        img = Image.open(BytesIO(r.content)).convert("RGB")
-                        img.save(path)
-                        paths.append(path)
-                        continue
-                    else:
-                        raise Exception(f"Pollinations API error {r.status_code}")
-            except Exception as e:
-                print("Pollinations generation failed:", e)
-                try:
-                    self._create_slide_image(prompt, path)
-                except Exception as ee:
-                    print("Fallback slide render failed:", ee)
-                paths.append(path)
-        return paths
+    def is_mechanism_section(self, content: str, title: str) -> bool:
+        """Determine if section describes biological/mechanism content."""
+        mechanism_keywords = [
+            "monoclonal antibody", "immune", "cells", "protein", 
+            "receptor", "biological", "pathway", "targeting",
+            "mechanism", "molecular", "antibody", "signaling",
+            "purpose", "study mechanism", "how it works"
+        ]
+        return any(kw.lower() in content.lower() or kw.lower() in title.lower() 
+                  for kw in mechanism_keywords)
+
+    def generate_mechanism_image(self, content: str, index: int) -> str:
+        """Generate image-only slide for biological mechanisms."""
+        # Extract biological concepts for accurate representation
+        bio_terms = re.findall(r'\b(?:antibody|receptor|protein|enzyme|cell|pathway|signaling|binding|complex)\w*\b', 
+                             content.lower())
+        
+        amoeba_style = (
+            "Create a biologically accurate mechanism illustration in Amoeba Sisters style. "
+            "REQUIREMENTS: "
+            "1. ABSOLUTELY NO TEXT OR LABELS - pure visual communication only. "
+            "2. Use scientifically accurate shapes for: "
+            "   - Antibody Y-shaped structures "
+            "   - Precise receptor conformations "
+            "   - Correct protein-protein interactions "
+            "   - Accurate cellular compartments and membranes "
+            "3. Style elements: "
+            "   - Friendly rounded shapes and cheerful expressions "
+            "   - Bright pastel colors for clarity "
+            "   - Thick outlines for main structures "
+            "   - Simple, uncluttered background "
+            "4. Show process flow through: "
+            "   - Clear directional movement "
+            "   - Size relationships between components "
+            "   - Interaction zones highlighted by color/shape "
+            "5. Focus on mechanical accuracy while maintaining cute style"
+        )
+
+        mechanism_focus = (
+            "Focus on precise biological representation of: " +
+            ", ".join(bio_terms) if bio_terms else "the molecular mechanism"
+        )
+
+        full_prompt = f"Scientifically accurate {mechanism_focus}. {amoeba_style}"
+        path = os.path.join(mechanism_dir, f"mechanism_{index}.png")
+        
+        try:
+            if self.image_model:
+                self.image_model(full_prompt, save=True, file=path)
+            else:
+                url = f"https://pollinations.ai/p/{requests.utils.quote(full_prompt)}?width=1280&height=720&nologo=true"
+                r = requests.get(url, timeout=30)
+                if r.status_code == 200:
+                    img = Image.open(BytesIO(r.content)).convert("RGB")
+                    img.save(path)
+            return path
+        except Exception as e:
+            print(f"Mechanism image generation failed: {e}")
+            return self._create_fallback_slide(content, path)
+
+    def generate_trial_slide(self, content: str, index: int) -> str:
+        """Generate text-focused slide with statistics emphasis."""
+        path = os.path.join(trial_dir, f"trial_{index}.png")
+        w, h = 1280, 720
+        img = Image.new("RGB", (w, h), (245, 245, 250))
+        draw = ImageDraw.Draw(img)
+
+        try:
+            title_font = ImageFont.truetype("arial.ttf", 36)
+            body_font = ImageFont.truetype("arial.ttf", 28)
+            stat_font = ImageFont.truetype("arial.ttf", 72)
+        except Exception:
+            title_font = body_font = stat_font = ImageFont.load_default()
+
+        # Extract statistics and numbers
+        stats = re.findall(r'(\d+(?:\.\d+)?)\s*(?:%|percent|patients?|participants?|weeks?|months?|years?)', content)
+        
+        if stats:
+            # Draw large statistics on right side
+            stat_x = w * 0.6
+            for i, stat in enumerate(stats[:3]):  # Show up to 3 stats
+                y_pos = h * (0.25 + i * 0.25)
+                draw.text((stat_x, y_pos), stat, font=stat_font, fill=(20, 80, 120), anchor="mm")
+            
+            # Draw text on left side only
+            text_width = w * 0.5 - 40
+        else:
+            # If no stats, use full width for text
+            text_width = w - 80
+
+        # Wrap and draw main content
+        wrapped = textwrap.fill(content, width=int(text_width/10))
+        draw.multiline_text(
+            (40, h//2), 
+            wrapped,
+            font=body_font,
+            fill=(40, 40, 60),
+            anchor="lm"
+        )
+        
+        img.save(path)
+        return path
 
     def generate_audio(self, text, out_path=None):
-        """Generate TTS for `text`. Returns path to audio file (mp3 or wav)."""
+        """Generate TTS audio for text content."""
         if out_path is None:
             out_path = os.path.join(output_dir, "voice.mp3")
-        # Try Fish TTS
+            
         if self.fish_key:
             url = "https://api.fish.audio/v1/audio/generation"
             payload = {"model": "tts-1", "text": text, "voice": "alloy"}
             headers = {"Authorization": f"Bearer {self.fish_key}", "Content-Type": "application/json"}
+            
             try:
                 r = requests.post(url, headers=headers, json=payload, timeout=60)
                 print("Fish status:", r.status_code)
@@ -95,35 +173,16 @@ class AIVideoAgent:
                     with open(out_path, "wb") as f:
                         f.write(r.content)
                     return out_path
-                else:
-                    try:
-                        j = r.json()
-                        audio_url = j.get("url") or j.get("audio_url")
-                        if audio_url:
-                            rr = requests.get(audio_url, timeout=60)
-                            if rr.status_code == 200:
-                                with open(out_path, "wb") as f:
-                                    f.write(rr.content)
-                                return out_path
-                    except Exception:
-                        pass
-                    print(f"Fish TTS returned {r.status_code}; falling back")
             except Exception as e:
                 print("Fish TTS failed:", e)
 
-        # Fallback to local TTS if available
         if pyttsx3 is not None and USE_LOCAL_TTS:
-            try:
-                wav_path = out_path if out_path.lower().endswith(".wav") else out_path.rsplit(".", 1)[0] + ".wav"
-                return self._local_tts(text, out_path=wav_path)
-            except Exception as e:
-                print("local pyttsx3 failed:", e)
-
-        # Last resort: silent WAV
+            return self._local_tts(text, out_path)
+        
         return self._silent_wav()
 
     def _local_tts(self, text, out_path):
-        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        """Generate audio using local pyttsx3."""
         if pyttsx3 is None:
             raise RuntimeError("pyttsx3 not available")
         engine = pyttsx3.init()
@@ -133,8 +192,9 @@ class AIVideoAgent:
         return out_path
 
     def _silent_wav(self):
+        """Generate silent audio as last resort."""
         import wave, struct
-        wav_path = os.path.join(output_dir, "voice_silence.wav")
+        wav_path = os.path.join(output_dir, "silent.wav")
         framerate = 22050
         nframes = framerate * 2
         with wave.open(wav_path, "w") as wf:
@@ -145,109 +205,118 @@ class AIVideoAgent:
             wf.writeframes(silence * nframes)
         return wav_path
 
-    def _create_slide_image(self, text, path, title=None):
-        """Simple PIL-based slide renderer fallback."""
+    def _create_fallback_slide(self, text, path):
+        """Create simple text slide as fallback."""
         w, h = 1280, 720
-        bg = (255, 255, 255)
-        img = Image.new("RGB", (w, h), bg)
+        img = Image.new("RGB", (w, h), (245, 245, 250))
         draw = ImageDraw.Draw(img)
         try:
-            font_title = ImageFont.truetype("arial.ttf", 28)
-            font_body = ImageFont.truetype("arial.ttf", 20)
+            font = ImageFont.truetype("arial.ttf", 28)
         except Exception:
-            font_title = ImageFont.load_default()
-            font_body = ImageFont.load_default()
-        if title:
-            draw.text((40, 20), title, fill=(20, 20, 60), font=font_title)
-        wrapped = textwrap.fill((text or "").replace("\n", " "), width=70)
-        draw.multiline_text((40, 80), wrapped, fill=(40, 40, 60), font=font_body)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+            font = ImageFont.load_default()
+        wrapped = textwrap.fill(text, width=60)
+        draw.multiline_text((w//2, h//2), wrapped, font=font, fill=(40, 40, 60),
+                           anchor="mm", align="center")
         img.save(path)
         return path
 
-
 def parse_paper_file(path):
-    """Return list of sections: [{'title': str, 'content': str, 'agent_functions': str}, ...]"""
-    def clean_content(s: str) -> str:
+    """Parse and clean paper content."""
+    def clean_text(s):
         if not s:
             return ""
-        # Remove literal escape sequences and actual newlines/returns/backslashes
-        s = s.replace('\\n', ' ').replace('\n', ' ').replace('\r', ' ').replace('\\', ' ')
-        # Collapse long separators (----...) and other repetitive punctuation
+        s = s.replace('\\n', ' ').replace('\n', ' ').replace('\r', ' ')
         s = re.sub(r'-{2,}', ' ', s)
-        # Remove control / non-printable characters
         s = ''.join(ch for ch in s if ch.isprintable())
-        # Normalize whitespace
-        s = re.sub(r'\s+', ' ', s).strip()
-        return s
+        return re.sub(r'\s+', ' ', s).strip()
 
-    raw = open(path, "r", encoding="utf-8").read()
-    parts = re.split(r"-{5,}", raw)
+    text = open(path, "r", encoding="utf-8").read()
+    parts = re.split(r"-{5,}", text)
     sections = []
+
     for part in parts:
         if not part.strip():
             continue
+        
         m_cat = re.search(r"Category:\s*(.+)", part)
-        title = clean_content(m_cat.group(1)) if m_cat else "Section"
+        title = clean_text(m_cat.group(1)) if m_cat else "Section"
+        
         m_cont = re.search(r"Content:\s*(.+?)(?:Duration|Agent Functions:|\Z)", part, flags=re.S)
-        content = clean_content(m_cont.group(1)) if m_cont else ""
-        m_af = re.search(r"Agent Functions:\s*(.+)", part, flags=re.S)
-        agent_functions = ""
-        if m_af:
-            agent_functions = clean_content(m_af.group(1))
-            # clean bullets and collapse into a single line
-            agent_functions = re.sub(r"^\s*-\s*", "", agent_functions, flags=re.M)
-            agent_functions = re.sub(r"\s+", " ", agent_functions).strip()
-        if content:
-            sections.append({"title": title, "content": content, "agent_functions": agent_functions})
-    return sections
+        content = clean_text(m_cont.group(1)) if m_cont else ""
+        
+        if not content:
+            continue
 
-
-if __name__ == "__main__":
-    # Main: parse file, generate images + audio, write manifest for external stitching
-    sample_path = os.path.join(os.path.dirname(__file__), "paper_2_sample.txt")
-    if not os.path.exists(sample_path):
-        raise SystemExit(f"sample text not found: {sample_path}")
-
-    sections = parse_paper_file(sample_path)
-    if not sections:
-        raise SystemExit("No sections parsed from sample file.")
-
-    agent = AIVideoAgent(FISH_API_KEY)
-
-    slide_prompts = []
-    for s in sections:
-        prompt = s["content"]
-        if s["agent_functions"]:
-            prompt += " Visual instructions: " + s["agent_functions"]
-        slide_prompts.append(prompt)
-
-    # 1) generate images
-    image_paths = agent.generate_images(slide_prompts)
-
-    # 2) generate per-slide audio files
-    manifest = []
-    for i, s in enumerate(sections, start=1):
-        img_path = image_paths[i - 1] if i - 1 < len(image_paths) else None
-        audio_out = os.path.join(output_dir, f"slide_{i}.wav")
-        print(f"[Audio] slide {i}: generating voice for '{s['title'][:40]}'")
-        # prefer local TTS for per-slide narration if available
-        if pyttsx3 is not None and USE_LOCAL_TTS:
-            aud_path = agent._local_tts(s["content"], out_path=audio_out)
-        else:
-            aud_path = agent.generate_audio(s["content"], out_path=audio_out.replace(".wav", ".mp3"))
-        manifest.append({
-            "index": i,
-            "title": s["title"],
-            "content": s["content"],
-            "image": img_path,
-            "audio": aud_path
+        sections.append({
+            "title": title,
+            "content": content
         })
 
-    # 3) save manifest JSON for external stitching
-    manifest_path = os.path.join(output_dir, "slides_manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
+    return sections
 
-    print(f"✅ Generated {len(manifest)} slides + audio files in {output_dir}")
-    print(f"✅ Manifest: {manifest_path}")
+def generate_video_with_slideshow(paper_path, use_tts=True):
+    """Generate video with slideshow-style timing."""
+    
+    sections = parse_paper_file(paper_path)
+    agent = AIVideoAgent(FISH_API_KEY)
+    clips = []
+
+    for i, section in enumerate(sections, start=1):
+        print(f"\nProcessing section {i}: {section['title']}")
+        
+        # Generate appropriate slide type
+        if agent.is_mechanism_section(section["content"], section["title"]):
+            print("→ Generating mechanism visualization")
+            img_path = agent.generate_mechanism_image(section["content"], i)
+        else:
+            print("→ Generating trial info slide")
+            img_path = agent.generate_trial_slide(section["content"], i)
+            
+        # Generate audio if requested and use the audio duration to drive slide timing
+        if use_tts:
+            audio_out = os.path.join(output_dir, f"audio_{i}.wav")
+            print("→ Generating audio")
+            aud_path = agent.generate_audio(section["content"], audio_out)
+
+            # Load audio and use its exact duration for the image clip to avoid overlap
+            audio = AudioFileClip(aud_path)
+            audio_duration = audio.duration if hasattr(audio, 'duration') else None
+            if not audio_duration or audio_duration <= 0:
+                # Fallback: estimate duration from text length (2 words/sec)
+                words = len(section['content'].split())
+                audio_duration = max(5, min(20, words / 2.0))
+
+            # Create clip with duration equal to audio duration and attach audio
+            clip = ImageClip(img_path).set_duration(audio_duration)
+            clip = clip.set_audio(audio)
+        else:
+            # Create clip without audio
+            # Estimate a reasonable duration based on text length
+            words = len(section['content'].split())
+            duration = max(5, min(20, words / 2.0))
+            clip = ImageClip(img_path).set_duration(duration)
+            
+        # Add fade effects (clamped to clip length)
+        try:
+            fade_time = min(0.5, clip.duration / 4.0)
+        except Exception:
+            fade_time = 0.5
+        if fade_time > 0:
+            clip = clip.fadein(fade_time).fadeout(fade_time)
+        clips.append(clip)
+
+    # Combine all clips
+    final = concatenate_videoclips(clips, method="compose")
+    final_path = os.path.join(output_dir, "final_slideshow.mp4")
+    final.write_videofile(final_path, fps=24)
+    print(f"\n✅ Generated video: {final_path}")
+    return final_path
+
+if __name__ == "__main__":
+    sample_path = os.path.join(os.path.dirname(__file__), "paper_1_sample.txt")
+    if not os.path.exists(sample_path):
+        raise SystemExit(f"sample text not found: {sample_path}")
+        
+    # Generate video with slideshow timing and TTS audio
+    final_path = generate_video_with_slideshow(sample_path, use_tts=True)
+    print("✅ Video generation complete!")

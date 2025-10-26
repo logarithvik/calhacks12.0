@@ -257,10 +257,6 @@ def generate_video_with_slideshow(paper_path, use_tts=True):
     for i, section in enumerate(sections, start=1):
         print(f"\nProcessing section {i}: {section['title']}")
         
-        # Calculate duration based on content length (roughly 2 words per second)
-        words = len(section['content'].split())
-        duration = max(5, min(20, words / 2.0))  # Between 5-20 seconds
-        
         # Generate appropriate slide type
         if agent.is_mechanism_section(section["content"], section["title"]):
             print("→ Generating mechanism visualization")
@@ -269,22 +265,37 @@ def generate_video_with_slideshow(paper_path, use_tts=True):
             print("→ Generating trial info slide")
             img_path = agent.generate_trial_slide(section["content"], i)
             
-        # Generate audio if requested
+        # Generate audio if requested and use the audio duration to drive slide timing
         if use_tts:
             audio_out = os.path.join(output_dir, f"audio_{i}.wav")
             print("→ Generating audio")
             aud_path = agent.generate_audio(section["content"], audio_out)
-            
-            # Create clip with audio
-            clip = ImageClip(img_path).set_duration(duration)
+
+            # Load audio and use its exact duration for the image clip to avoid overlap
             audio = AudioFileClip(aud_path)
+            audio_duration = audio.duration if hasattr(audio, 'duration') else None
+            if not audio_duration or audio_duration <= 0:
+                # Fallback: estimate duration from text length (2 words/sec)
+                words = len(section['content'].split())
+                audio_duration = max(5, min(20, words / 2.0))
+
+            # Create clip with duration equal to audio duration and attach audio
+            clip = ImageClip(img_path).set_duration(audio_duration)
             clip = clip.set_audio(audio)
         else:
             # Create clip without audio
+            # Estimate a reasonable duration based on text length
+            words = len(section['content'].split())
+            duration = max(5, min(20, words / 2.0))
             clip = ImageClip(img_path).set_duration(duration)
             
-        # Add fade effects
-        clip = clip.fadein(0.5).fadeout(0.5)
+        # Add fade effects (clamped to clip length)
+        try:
+            fade_time = min(0.5, clip.duration / 4.0)
+        except Exception:
+            fade_time = 0.5
+        if fade_time > 0:
+            clip = clip.fadein(fade_time).fadeout(fade_time)
         clips.append(clip)
 
     # Combine all clips

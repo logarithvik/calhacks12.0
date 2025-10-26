@@ -3,14 +3,15 @@ import requests
 import nltk
 from nltk.tokenize import sent_tokenize
 from dotenv import load_dotenv
-from moviepy import ImageClip, AudioFileClip, concatenate_videoclips
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import textwrap
-from generate_outline_video import create_slide_image, local_tts
-# compute output dir locally to avoid importing side-effect constants
-output_dir = os.path.join(os.path.dirname(__file__), 'output')
-from multiprocessing import freeze_support  # prevents infinite loop during video creation
+import json
+import re
+
+# compute output dir locally
+output_dir = os.path.join(os.path.dirname(__file__), "output")
+os.makedirs(output_dir, exist_ok=True)
 
 # Optional local TTS
 try:
@@ -18,7 +19,7 @@ try:
 except Exception:
     pyttsx3 = None
 
-# Pollinations SDK (pip install pollinations)
+# Pollinations SDK (optional)
 try:
     from pollinations import Image as PollImage
 except Exception:
@@ -37,27 +38,33 @@ class AIVideoAgent:
         self.fish_key = fish_key
         self.image_model = PollImage(width=1280, height=720, seed="random") if PollImage else None
 
-    # ---------- IMAGE GENERATION (Pollinations) ----------
-    def generate_images(self, sentences):
+    def generate_images(self, prompts):
+        """Generate one PNG per prompt, return list of paths."""
         paths = []
-        os.makedirs("output", exist_ok=True)
-
-        for i, text in enumerate(sentences):
-            prompt = f"{text}, cinematic digital art, soft lighting"
-            path = f"output/frame_{i+1}.png"
-            print(f"[Image] {i+1}/{len(sentences)}: {prompt}")
-
+        os.makedirs(output_dir, exist_ok=True)
+        for i, prompt in enumerate(prompts, start=1):
+            amoeba_style = (
+                "A colorful, cartoon-style educational illustration in the style of the Amoeba Sisters YouTube videos. "
+                "Use friendly rounded shapes, bright pastel colors, thick outlines, and simple cell-like characters with expressive faces. "
+                "The scene should explain a biological mechanism clearly using labeled arrows, minimal text, and a cheerful science-classroom tone. "
+                "Simple, uncluttered background focusing on clarity and visual humor."
+            )
+            full_prompt = f"{prompt}. {amoeba_style}"
+            path = os.path.join(output_dir, f"slide_{i}.png")
+            print(f"[Image] {i}/{len(prompts)}: {full_prompt[:200]}...")
             try:
                 if self.image_model:
-                    self.image_model(prompt, save=True, file=path)
+                    try:
+                        self.image_model(full_prompt, save=True, file=path)
+                    except Exception:
+                        self.image_model(prompt=full_prompt, save=True, file=path)
                     paths.append(path)
                     continue
                 else:
-                    # direct endpoint fallback
-                    url = f"https://pollinations.ai/p/{requests.utils.quote(prompt)}?width=1280&height=720&nologo=true"
+                    url = f"https://pollinations.ai/p/{requests.utils.quote(full_prompt)}?width=1280&height=720&nologo=true"
                     r = requests.get(url, timeout=30)
                     if r.status_code == 200:
-                        img = Image.open(BytesIO(r.content))
+                        img = Image.open(BytesIO(r.content)).convert("RGB")
                         img.save(path)
                         paths.append(path)
                         continue
@@ -65,182 +72,60 @@ class AIVideoAgent:
                         raise Exception(f"Pollinations API error {r.status_code}")
             except Exception as e:
                 print("Pollinations generation failed:", e)
-                self._create_slide_image(text, path)
+                try:
+                    self._create_slide_image(prompt, path)
+                except Exception as ee:
+                    print("Fallback slide render failed:", ee)
                 paths.append(path)
         return paths
 
-    # ---------- AUDIO GENERATION (Fish Audio) ----------
-    def generate_audio(self, text):
-        url = "https://api.fish.audio/v1/audio/generation"
-        payload = {"model": "tts-1", "text": text, "voice": "alloy"}
-        headers = {"Authorization": f"Bearer {self.fish_key}", "Content-Type": "application/json"}
-
-        try:
-            r = requests.post(url, headers=headers, json=payload, timeout=60)
-            print("Fish status:", r.status_code)
-            print("Fish response:", r.text[:200])
-            if r.status_code == 200:
-                path = "output/voice.mp3"
-                with open(path, "wb") as f:
-                    f.write(r.content)
-                return path
-            else:
-                raise Exception(f"TTS error {r.text}")
-        except Exception as e:
-            print("Fish TTS failed:", e)
-            if USE_LOCAL_TTS and pyttsx3:
-                return self._local_tts(text)
-            else:
-                return self._silent_wav()
-
-    # ---------- VIDEO COMPOSITION ----------
-    def compose_video(self, image_paths, audio_path):
-        if not image_paths:
-            raise ValueError("No images to compose video")
-
-        audio = AudioFileClip(audio_path)
-        each = audio.duration / len(image_paths)
-        print(f"Composing video: {len(image_paths)} slides, {each:.2f}s each")
-
-        clips = [
-            ImageClip(p)
-            .resize(width=1280)
-            .set_duration(each)
-            .fadein(0.7)
-            .fadeout(0.7)
-            for p in image_paths
-        ]
-        video = concatenate_videoclips(clips, method="compose", padding=-0.5)
-        final = video.set_audio(audio)
-        output_path = "output/final_video.mp4"
-        final.write_videofile(output_path, fps=24)
-        return output_path
-
-    # ---------- MAIN PIPELINE ----------
-    def create_video(self, text):
-        # Default behavior: try to use Pollinations image generation first,
-        # then fall back to outline-style slides if unavailable.
-        sentences = sent_tokenize(text)
-        os.makedirs(output_dir, exist_ok=True)
-
-        # Try Pollinations-based image generation for the sentences
-        try:
-            poll_imgs = self.generate_images(sentences)
-            if poll_imgs and len(poll_imgs) == len(sentences):
-                print("Using Pollinations images for slides")
-                # generate per-slide local TTS and assemble
-                clips = []
-                for i, img_p in enumerate(poll_imgs, start=1):
-                    aud_p = os.path.join(output_dir, f"slide_{i}.wav")
-                    try:
-                        local_tts(sentences[i - 1], aud_p)
-                        audio_clip = AudioFileClip(aud_p)
-                        clip = ImageClip(img_p)
-                        if hasattr(clip, 'set_duration'):
-                            clip = clip.set_duration(audio_clip.duration)
-                        elif hasattr(clip, 'with_duration'):
-                            clip = clip.with_duration(audio_clip.duration)
-                        else:
-                            raise RuntimeError('No duration setter available on ImageClip')
-
-                        if hasattr(clip, 'set_audio'):
-                            clip = clip.set_audio(audio_clip)
-                        elif hasattr(clip, 'with_audio'):
-                            clip = clip.with_audio(audio_clip)
-                        else:
-                            print('Warning: could not attach audio to clip')
-
-                        clips.append(clip)
-                    except Exception as e:
-                        print("Pollinations-path: error building clip:", e)
-
-                if clips:
-                    final = concatenate_videoclips(clips, method="compose")
-                    out = os.path.join(output_dir, "final_video.mp4")
-                    final.write_videofile(out, fps=24)
-                    print(f"✅ Video ready: {out}")
-                    return out
+    def generate_audio(self, text, out_path=None):
+        """Generate TTS for `text`. Returns path to audio file (mp3 or wav)."""
+        if out_path is None:
+            out_path = os.path.join(output_dir, "voice.mp3")
+        # Try Fish TTS
+        if self.fish_key:
+            url = "https://api.fish.audio/v1/audio/generation"
+            payload = {"model": "tts-1", "text": text, "voice": "alloy"}
+            headers = {"Authorization": f"Bearer {self.fish_key}", "Content-Type": "application/json"}
+            try:
+                r = requests.post(url, headers=headers, json=payload, timeout=60)
+                print("Fish status:", r.status_code)
+                if r.status_code == 200:
+                    with open(out_path, "wb") as f:
+                        f.write(r.content)
+                    return out_path
                 else:
-                    print("Pollinations images generated but no clips could be assembled; falling back")
-        except Exception as e:
-            print("Pollinations generation path failed:", e)
-
-        # Fall back: create simple slides + per-slide local TTS (existing behavior)
-        image_paths = []
-        audio_paths = []
-        for i, s in enumerate(sentences, start=1):
-            img_path = os.path.join(output_dir, f"slide_{i}.png")
-            audio_path = os.path.join(output_dir, f"slide_{i}.wav")
-            print(f"[Slide] {i}/{len(sentences)}")
-            try:
-                create_slide_image(s, img_path, title=None)
+                    try:
+                        j = r.json()
+                        audio_url = j.get("url") or j.get("audio_url")
+                        if audio_url:
+                            rr = requests.get(audio_url, timeout=60)
+                            if rr.status_code == 200:
+                                with open(out_path, "wb") as f:
+                                    f.write(rr.content)
+                                return out_path
+                    except Exception:
+                        pass
+                    print(f"Fish TTS returned {r.status_code}; falling back")
             except Exception as e:
-                print("create_slide_image failed, falling back:", e)
-                self._create_slide_image(s, img_path)
+                print("Fish TTS failed:", e)
 
+        # Fallback to local TTS if available
+        if pyttsx3 is not None and USE_LOCAL_TTS:
             try:
-                local_tts(s, audio_path)
+                wav_path = out_path if out_path.lower().endswith(".wav") else out_path.rsplit(".", 1)[0] + ".wav"
+                return self._local_tts(text, out_path=wav_path)
             except Exception as e:
-                print("local_tts failed, falling back to Fish or silence:", e)
-                audio_paths = []
-                break
+                print("local pyttsx3 failed:", e)
 
-            image_paths.append(img_path)
-            audio_paths.append(audio_path)
+        # Last resort: silent WAV
+        return self._silent_wav()
 
-        if audio_paths and len(audio_paths) == len(image_paths):
-            clips = []
-            for img_p, aud_p in zip(image_paths, audio_paths):
-                try:
-                    audio_clip = AudioFileClip(aud_p)
-                    clip = ImageClip(img_p)
-                    if hasattr(clip, 'set_duration'):
-                        clip = clip.set_duration(audio_clip.duration)
-                    elif hasattr(clip, 'with_duration'):
-                        clip = clip.with_duration(audio_clip.duration)
-                    else:
-                        raise RuntimeError('No duration setter available on ImageClip')
-
-                    if hasattr(clip, 'set_audio'):
-                        clip = clip.set_audio(audio_clip)
-                    elif hasattr(clip, 'with_audio'):
-                        clip = clip.with_audio(audio_clip)
-                    else:
-                        print('Warning: could not attach audio to clip')
-
-                    clips.append(clip)
-                except Exception as e:
-                    print("Error attaching audio to clip:", e)
-
-            if not clips:
-                raise RuntimeError("No clips were assembled")
-
-            final = concatenate_videoclips(clips, method="compose")
-            out = os.path.join(output_dir, "final_video.mp4")
-            final.write_videofile(out, fps=24)
-            print(f"✅ Video ready: {out}")
-            return out
-
-        # Last-resort: generate images via Pollinations for a smaller set and a single Fish audio track
-        sentences = sentences[:10]
-        imgs = self.generate_images(sentences)
-        audio = self.generate_audio(text)
-        video_path = self.compose_video(imgs, audio)
-        print(f"✅ Video ready: {video_path}")
-
-    # ---------- FALLBACK HELPERS ----------
-    def _create_slide_image(self, text, path):
-        img = Image.new("RGB", (1280, 720), color=(245, 245, 250))
-        draw = ImageDraw.Draw(img)
-        try:
-            font = ImageFont.truetype("arial.ttf", 26)
-        except Exception:
-            font = ImageFont.load_default()
-        wrapped = textwrap.fill(text, width=70)
-        draw.text((40, 100), wrapped, font=font, fill=(40, 40, 60))
-        img.save(path)
-
-    def _local_tts(self, text, out_path="output/voice_local.wav"):
+    def _local_tts(self, text, out_path):
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        if pyttsx3 is None:
+            raise RuntimeError("pyttsx3 not available")
         engine = pyttsx3.init()
         engine.setProperty("rate", 150)
         engine.save_to_file(text, out_path)
@@ -249,7 +134,7 @@ class AIVideoAgent:
 
     def _silent_wav(self):
         import wave, struct
-        wav_path = "output/voice_silence.wav"
+        wav_path = os.path.join(output_dir, "voice_silence.wav")
         framerate = 22050
         nframes = framerate * 2
         with wave.open(wav_path, "w") as wf:
@@ -260,14 +145,96 @@ class AIVideoAgent:
             wf.writeframes(silence * nframes)
         return wav_path
 
+    def _create_slide_image(self, text, path, title=None):
+        """Simple PIL-based slide renderer fallback."""
+        w, h = 1280, 720
+        bg = (255, 255, 255)
+        img = Image.new("RGB", (w, h), bg)
+        draw = ImageDraw.Draw(img)
+        try:
+            font_title = ImageFont.truetype("arial.ttf", 28)
+            font_body = ImageFont.truetype("arial.ttf", 20)
+        except Exception:
+            font_title = ImageFont.load_default()
+            font_body = ImageFont.load_default()
+        if title:
+            draw.text((40, 20), title, fill=(20, 20, 60), font=font_title)
+        wrapped = textwrap.fill((text or "").replace("\n", " "), width=70)
+        draw.multiline_text((40, 80), wrapped, fill=(40, 40, 60), font=font_body)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        img.save(path)
+        return path
 
-# ---------- MAIN EXECUTION ----------
+
+def parse_paper_file(path):
+    """Return list of sections: [{'title': str, 'content': str, 'agent_functions': str}, ...]"""
+    text = open(path, "r", encoding="utf-8").read()
+    parts = re.split(r"-{5,}", text)
+    sections = []
+    for part in parts:
+        if not part.strip():
+            continue
+        m_cat = re.search(r"Category:\s*(.+)", part)
+        title = m_cat.group(1).strip() if m_cat else "Section"
+        m_cont = re.search(r"Content:\s*(.+?)(?:Duration|Agent Functions:|\Z)", part, flags=re.S)
+        content = m_cont.group(1).strip() if m_cont else ""
+        m_af = re.search(r"Agent Functions:\s*(.+)", part, flags=re.S)
+        agent_functions = ""
+        if m_af:
+            agent_functions = m_af.group(1).strip()
+            agent_functions = re.sub(r"^\s*-\s*", "", agent_functions, flags=re.M)
+            agent_functions = re.sub(r"\s+", " ", agent_functions).strip()
+        content = re.sub(r"\s+", " ", content).strip()
+        if content:
+            sections.append({"title": title, "content": content, "agent_functions": agent_functions})
+    return sections
+
+
 if __name__ == "__main__":
-    freeze_support()  # fixes infinite loop when using MoviePy + multiprocessing
+    # Main: parse file, generate images + audio, write manifest for external stitching
+    sample_path = os.path.join(os.path.dirname(__file__), "paper_2_sample.txt")
+    if not os.path.exists(sample_path):
+        raise SystemExit(f"sample text not found: {sample_path}")
 
-    text = """Clinical trials help scientists test new drugs safely.
-    Participants receive close medical care and help advance medicine.
-    Each phase builds on the previous to measure safety, dosage, and effectiveness."""
+    sections = parse_paper_file(sample_path)
+    if not sections:
+        raise SystemExit("No sections parsed from sample file.")
 
     agent = AIVideoAgent(FISH_API_KEY)
-    agent.create_video(text)
+
+    slide_prompts = []
+    for s in sections:
+        prompt = s["content"]
+        if s["agent_functions"]:
+            prompt += " Visual instructions: " + s["agent_functions"]
+        slide_prompts.append(prompt)
+
+    # 1) generate images
+    image_paths = agent.generate_images(slide_prompts)
+
+    # 2) generate per-slide audio files
+    manifest = []
+    for i, s in enumerate(sections, start=1):
+        img_path = image_paths[i - 1] if i - 1 < len(image_paths) else None
+        audio_out = os.path.join(output_dir, f"slide_{i}.wav")
+        print(f"[Audio] slide {i}: generating voice for '{s['title'][:40]}'")
+        # prefer local TTS for per-slide narration if available
+        if pyttsx3 is not None and USE_LOCAL_TTS:
+            aud_path = agent._local_tts(s["content"], out_path=audio_out)
+        else:
+            aud_path = agent.generate_audio(s["content"], out_path=audio_out.replace(".wav", ".mp3"))
+        manifest.append({
+            "index": i,
+            "title": s["title"],
+            "content": s["content"],
+            "image": img_path,
+            "audio": aud_path
+        })
+
+    # 3) save manifest JSON for external stitching
+    manifest_path = os.path.join(output_dir, "slides_manifest.json")
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ Generated {len(manifest)} slides + audio files in {output_dir}")
+    print(f"✅ Manifest: {manifest_path}")

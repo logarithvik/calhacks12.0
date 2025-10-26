@@ -51,8 +51,12 @@ class GeneratedContent(Base):
     content_type = Column(String, nullable=False)
     
     # Extracted/generated data
-    content_text = Column(Text, nullable=True)  # For summaries and structured data
-    file_path = Column(String, nullable=True)  # For infographics and videos
+    # For summaries: plain text stored here and optionally as a separate .txt file
+    content_text = Column(Text, nullable=True)
+    content_file_path = Column(String, nullable=True)  # Path to a plain-text file (e.g., uploads/generated/summary_.. .txt)
+
+    # For infographics and videos
+    file_path = Column(String, nullable=True)
     file_url = Column(String, nullable=True)  # Public URL if hosted
     
     # Metadata

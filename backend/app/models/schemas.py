@@ -56,6 +56,7 @@ class TrialResponse(TrialBase):
 class GeneratedContentBase(BaseModel):
     content_type: str
     content_text: Optional[str] = None
+    content_file_path: Optional[str] = None
     file_path: Optional[str] = None
     file_url: Optional[str] = None
 

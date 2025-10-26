@@ -1,0 +1,119 @@
+Video Outline Example: Cemiplimab Clinical Trial (Cutaneous Squamous Cell Carcinoma)
+
+----------------------------------------------------------------------
+Category: Significance
+----------------------------------------------------------------------
+Content:
+Significance: 2nd most common malignancy in US, hundreds of thousands of people impacted.
+Numbers doubled from 1994–2006.
+
+Duration of Video: 5–10 sec
+Agent Functions:
+- Generate graph and statistics visualization.
+
+---------------------------------------------------------------------- 
+Category: Purpose of the Study
+----------------------------------------------------------------------
+Content:
+The study tests cemiplimab, a fully human monoclonal antibody that targets the PD-1 immune checkpoint.
+Can further explain what is PD-1 immune checkpoint — possibly using an analogy.
+It is being evaluated for people with advanced cutaneous squamous cell carcinoma (CSCC),
+either metastatic (spread to lymph nodes or distant organs) or cannot be removed with surgery or treated with radiation.
+
+Duration of Video: 10–15 sec
+Agent Functions:
+- Generate narrated explanation with visuals of PD-1 mechanism.
+- Create generative video/images illustrating the biological process.
+
+---------------------------------------------------------------------- 
+Category: Who Can Participate
+----------------------------------------------------------------------
+Content:
+Participants must:
+- Be 18 or older with confirmed invasive CSCC.
+- Meet other eligibility criteria such as overall health and CSCC condition.
+
+Duration of Video: 5 sec
+Agent Functions:
+- Display brief diagram or infographic summarizing eligibility criteria.
+
+---------------------------------------------------------------------- 
+Category: What Participation Involves
+----------------------------------------------------------------------
+Content:
+Screening Period: Up to 4 weeks, including blood tests, imaging (CT/MRI), ECG, and biopsies.
+
+Treatment Period:
+- Cemiplimab given intravenously (IV) every 2–4 weeks for 48–108 weeks.
+- Some participants may later switch to subcutaneous (SC) injections after 27 weeks if disease remains stable.
+- Participation could last up to 2 years including follow-up.
+
+Follow-Up: 6 months to 1.5 years post-treatment to monitor safety and effects.
+
+A typical visit includes physical exams, lab tests, imaging, questionnaires, or biopsies.
+
+If duration is given in weeks and greater than 10, express it in months.
+
+Duration of Video: 15 sec (after trimming)
+Agent Functions:
+- Create study flowchart or animated diagram summarizing timeline and stages.
+
+---------------------------------------------------------------------- 
+Category: Possible Benefits
+----------------------------------------------------------------------
+Content:
+- Cemiplimab may help your immune system fight cancer.
+- Prior studies showed tumor shrinkage or control in some people with advanced CSCC.
+- You’ll receive close medical monitoring throughout the study.
+
+Duration of Video: 10 sec
+Agent Functions:
+- Generate reassuring narrative with supportive visuals of immune response and clinical care.
+
+---------------------------------------------------------------------- 
+Category: Possible Side Effects
+----------------------------------------------------------------------
+Content:
+Cemiplimab works by stimulating the immune system, which can sometimes attack normal organs.
+
+Possible side effects include:
+Fatigue, rash, itching, diarrhea, fever, chills, shortness of breath,
+inflammation of organs (liver, lungs, colon, thyroid, kidneys, endocrine glands),
+colitis, thyroid disorders, skin reactions, neurologic events.
+
+If side effects are unbearable, participants may stop the drug or request alternate medications at no cost.
+
+Duration of Video: 15 sec
+Agent Functions:
+- Display side effect list visually (text on screen).
+- Continue showing molecular mechanism visuals simplified for patient understanding.
+- Prompt study administrator for input on phrasing sensitive content.
+
+---------------------------------------------------------------------- 
+Category: Confidentiality and Ethics
+----------------------------------------------------------------------
+Content:
+The study follows Good Clinical Practice (GCP) and ethical standards (Declaration of Helsinki).
+Your safety and privacy are highly valued.
+If you want to learn more about your rights as a participant, please visit the provided link.
+
+Duration of Video: 10 sec
+Agent Functions:
+- Display ethics statement and reassurance visuals.
+- Optional link button to participant rights page.
+
+---------------------------------------------------------------------- 
+Category: Contact
+----------------------------------------------------------------------
+Content:
+Conducted by Regeneron Pharmaceuticals, Inc.
+Please reach out to your study researcher or the provided contact if you have any concerns or questions.
+
+Duration of Video: 7 sec
+Agent Functions:
+- Generate info screen with bolded contact information.
+- Display administrator-provided contact details dynamically.
+
+----------------------------------------------------------------------
+
+End of Example Outline

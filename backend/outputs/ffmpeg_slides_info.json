@@ -1,23 +1,23 @@
 [
   {
-    "index": 0,
-    "title": "When Fats Get Too High",
-    "caption": "Explain what severe hypertriglyceridemia is and its main complication (acute pancreatitis) in simple terms.",
-    "path": "uploads/video_outputs/trial_1/20251026_093046/slides/slide_000.png",
+    "index": 1,
+    "title": "Understanding High Triglycerides",
+    "caption": "Define triglycerides, explain their role, and link dangerously high levels to acute pancreatitis.",
+    "path": "uploads/video_outputs/trial_1/20251026_095758/slides/slide_000.png",
     "duration": 12
   },
   {
-    "index": 0,
-    "title": "Releasing the Body's Brake",
-    "caption": "Explain the role of ANGPTL3 and LPL, and how evinacumab targets ANGPTL3 to improve triglyceride breakdown using an analogy.",
-    "path": "uploads/video_outputs/trial_1/20251026_093046/slides/slide_001.png",
+    "index": 2,
+    "title": "Releasing the Brakes on Triglycerides",
+    "caption": "Explain the biological mechanism of ANGPTL3 and LPL in triglyceride metabolism, and introduce how evinacumab aims to intervene.",
+    "path": "uploads/video_outputs/trial_1/20251026_095758/slides/slide_001.png",
     "duration": 12
   },
   {
-    "index": 0,
-    "title": "Toward a Healthier Future",
-    "caption": "Emphasize the potential benefits of the drug and the overall positive impact of the research for patients.",
-    "path": "uploads/video_outputs/trial_1/20251026_093046/slides/slide_002.png",
+    "index": 3,
+    "title": "A New Path to Healthier Levels",
+    "caption": "Connect the drug's mechanism back to the patient's well-being and the ultimate goal of the clinical trial for preventing pancreatitis.",
+    "path": "uploads/video_outputs/trial_1/20251026_095758/slides/slide_002.png",
     "duration": 12
   }
 ]

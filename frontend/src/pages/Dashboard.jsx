@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trialsAPI } from '../services/api';
-import { Plus, FileText, Trash2, Eye } from 'lucide-react';
+import { Plus, FileText, Trash2, Eye, Loader } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
 const Dashboard = () => {
@@ -39,16 +39,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">My Clinical Trials</h1>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
+                My Clinical Trials
+              </h1>
+              <p className="text-gray-600">Manage and generate educational content from your protocols</p>
+            </div>
             <button
               onClick={() => setShowUploadModal(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              className="btn-gradient flex items-center space-x-2"
             >
               <Plus className="w-5 h-5" />
               <span>New Trial</span>
@@ -60,13 +65,17 @@ const Dashboard = () => {
               <div className="text-xl text-gray-600">Loading trials...</div>
             </div>
           ) : trials.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg shadow">
-              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No trials yet</h3>
-              <p className="text-gray-600 mb-4">Upload your first clinical trial protocol to get started</p>
+            <div className="text-center py-16 soft-card">
+              <div className="icon-indigo inline-flex mb-4">
+                <FileText className="w-12 h-12" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">No trials yet</h3>
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                Upload your first clinical trial protocol to start generating patient-friendly educational content
+              </p>
               <button
                 onClick={() => setShowUploadModal(true)}
-                className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                className="btn-gradient inline-flex items-center space-x-2"
               >
                 <Plus className="w-5 h-5" />
                 <span>Upload Protocol</span>
@@ -75,35 +84,36 @@ const Dashboard = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {trials.map((trial) => (
-                <div key={trial.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div key={trial.id} className="soft-card card-hover">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900 flex-1">{trial.title}</h3>
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      trial.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      trial.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                      trial.status === 'error' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
+                    <h3 className="text-xl font-bold text-gray-900 flex-1 pr-2">{trial.title}</h3>
+                    <span className={`badge ${
+                      trial.status === 'completed' ? 'badge-success' :
+                      trial.status === 'processing' ? 'badge-warning' :
+                      trial.status === 'error' ? 'badge-error' :
+                      'badge-info'
                     }`}>
                       {trial.status}
                     </span>
                   </div>
 
                   {trial.original_filename && (
-                    <p className="text-sm text-gray-600 mb-2">
-                      📄 {trial.original_filename}
-                    </p>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600 mb-3 bg-gray-50 px-3 py-2 rounded-lg">
+                      <FileText className="w-4 h-4 text-indigo-500" />
+                      <span className="truncate">{trial.original_filename}</span>
+                    </div>
                   )}
 
                   <p className="text-xs text-gray-500 mb-4">
-                    Created: {new Date(trial.created_at).toLocaleDateString()}
+                    Created {new Date(trial.created_at).toLocaleDateString()}
                   </p>
 
                   {trial.generated_content && trial.generated_content.length > 0 && (
-                    <div className="mb-4 text-sm text-gray-600">
-                      <p>Generated content:</p>
-                      <div className="flex flex-wrap gap-2 mt-1">
+                    <div className="mb-4">
+                      <p className="text-xs font-semibold text-gray-500 mb-2">Generated Content:</p>
+                      <div className="flex flex-wrap gap-2">
                         {trial.generated_content.map((content) => (
-                          <span key={content.id} className="px-2 py-1 bg-indigo-50 text-indigo-700 rounded text-xs">
+                          <span key={content.id} className="badge-info">
                             {content.content_type}
                           </span>
                         ))}
@@ -111,17 +121,18 @@ const Dashboard = () => {
                     </div>
                   )}
 
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 pt-4 border-t border-gray-100">
                     <button
                       onClick={() => navigate(`/trial/${trial.id}`)}
-                      className="flex-1 flex items-center justify-center space-x-1 px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm"
+                      className="flex-1 flex items-center justify-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-medium shadow-md hover:shadow-lg"
                     >
                       <Eye className="w-4 h-4" />
-                      <span>View</span>
+                      <span>View Details</span>
                     </button>
                     <button
                       onClick={() => handleDelete(trial.id)}
-                      className="px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                      className="p-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                      title="Delete trial"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -168,19 +179,27 @@ const UploadModal = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold mb-4">Upload Clinical Trial Protocol</h2>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="glass-card max-w-md w-full p-8 animate-in fade-in duration-300">
+        <div className="mb-6">
+          <div className="icon-indigo inline-flex mb-4">
+            <Plus className="w-8 h-8" />
+          </div>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            Upload Clinical Trial Protocol
+          </h2>
+          <p className="text-gray-600 mt-2">Add a new trial to generate educational content</p>
+        </div>
         
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-800 rounded">
-            {error}
+          <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+            <p className="text-red-800 text-sm font-medium">{error}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-5">
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
               Trial Title
             </label>
             <input
@@ -188,23 +207,26 @@ const UploadModal = ({ onClose, onSuccess }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              className="input-field"
               placeholder="e.g., Phase II Study of Drug X"
             />
           </div>
 
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Protocol File (PDF or TXT)
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Protocol File
             </label>
-            <input
-              type="file"
-              accept=".pdf,.txt"
-              onChange={(e) => setFile(e.target.files[0])}
-              className="w-full"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Upload your clinical trial protocol document
+            <div className="relative">
+              <input
+                type="file"
+                accept=".pdf,.txt"
+                onChange={(e) => setFile(e.target.files[0])}
+                className="w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+              />
+            </div>
+            <p className="mt-2 text-xs text-gray-500 flex items-center space-x-1">
+              <FileText className="w-3 h-3" />
+              <span>Upload PDF or TXT file containing your clinical trial protocol</span>
             </p>
           </div>
 
@@ -212,16 +234,26 @@ const UploadModal = ({ onClose, onSuccess }) => {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+              className="btn-secondary flex-1"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={uploading}
-              className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+              className="btn-gradient flex-1 flex items-center justify-center space-x-2"
             >
-              {uploading ? 'Uploading...' : 'Upload'}
+              {uploading ? (
+                <>
+                  <Loader className="w-5 h-5 animate-spin" />
+                  <span>Uploading...</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-5 h-5" />
+                  <span>Upload</span>
+                </>
+              )}
             </button>
           </div>
         </form>

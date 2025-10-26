@@ -205,3 +205,78 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- ignore common large/binary files and folders (added) ---
+# Archives and disk images
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+*.iso
+*.img
+
+# Media/video (often large)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.webm
+
+# Large images / design files
+*.psd
+*.ai
+*.sketch
+*.xd
+
+# Databases, dumps, and backups
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.dump
+*.dmp
+
+# Executables / installers
+*.exe
+*.msi
+*.apk
+*.ipa
+*.bin
+
+# Machine learning / model artifacts
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.onnx
+*.tflite
+
+# Data folders and common large dirs
+/data/
+/datasets/
+/large_files/
+/artifacts/
+/models/
+/weights/
+/outputs/
+/output/
+/saved_models/
+/checkpoints/
+/logs/
+/tmp/
+/cache/
+
+# Node / frontend dependencies (can be large)
+node_modules/
+
+# OS / IDE large caches
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# End of added large-file ignores

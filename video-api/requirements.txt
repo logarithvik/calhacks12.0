@@ -1,0 +1,8 @@
+requests
+moviepy
+pillow
+nltk
+python-dotenv
+pyttsx3
+matplotlib
+networkx

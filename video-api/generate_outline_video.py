@@ -84,49 +84,62 @@ def local_tts(text, out_path):
 
 
 # Slides (title optional) — derived from user's outline
-slides = [
-    ("Impact", "Significance: Second most common malignancy in the US. Hundreds of thousands affected. Incidence doubled from 1994 to 2006.", 8),
-    ("Purpose", "This study tests cemiplimab, a human monoclonal antibody targeting the PD-1 immune checkpoint. PD-1 acts as a brake on immune cells; blocking it helps the immune system attack cancer. (Analogy: removing a brake so the immune car can move.)", 12),
-    ("Who Can Participate", "Adults 18+ with confirmed invasive CSCC. Additional eligibility checks include overall health and tumor characteristics.", 5),
-    ("What Participation Involves", "Screening up to 4 weeks (blood tests, imaging, ECG, biopsies). Treatment: IV cemiplimab every 2–4 weeks for 48–108 weeks, possible switch to subcutaneous injections after 27 weeks if stable. Follow-up for 6 months to 1.5 years.", 15),
-    ("Flowchart", "Screening → Enrollment → Treatment cycles → Assessment → Follow-up (months).", 15),
-    ("Possible Benefits", "Cemiplimab may shrink or control tumors and provides close medical monitoring for participants.", 10),
-    ("Possible Side Effects", "Immune-related side effects: fatigue, rash, diarrhea, fever, organ inflammation (liver, lungs, colon, thyroid). Severe events are possible; you may stop treatment at any time.", 15),
-    ("Confidentiality & Ethics", "This study follows GCP and the Declaration of Helsinki. Your safety and privacy are priorities. For participant rights visit the provided link.", 10),
-    ("Contact", "Conducted by Regeneron Pharmaceuticals, Inc. For questions contact the study team at: [Insert contact details].", 7),
-]
+def generate_default_outline_video(slides=None):
+    """Create an example outline video using the built-in `slides` data.
 
-output_dir = os.path.join(os.path.dirname(__file__), 'output')
-os.makedirs(output_dir, exist_ok=True)
+    This function is safe to import (it doesn't run automatically). Call it
+    directly when you want to produce the example outline video.
+    """
+    default_slides = [
+        ("Impact", "Significance: Second most common malignancy in the US. Hundreds of thousands affected. Incidence doubled from 1994 to 2006.", 8),
+        ("Purpose", "This study tests cemiplimab, a human monoclonal antibody targeting the PD-1 immune checkpoint. PD-1 acts as a brake on immune cells; blocking it helps the immune system attack cancer. (Analogy: removing a brake so the immune car can move.)", 12),
+        ("Who Can Participate", "Adults 18+ with confirmed invasive CSCC. Additional eligibility checks include overall health and tumor characteristics.", 5),
+        ("What Participation Involves", "Screening up to 4 weeks (blood tests, imaging, ECG, biopsies). Treatment: IV cemiplimab every 2–4 weeks for 48–108 weeks, possible switch to subcutaneous injections after 27 weeks if stable. Follow-up for 6 months to 1.5 years.", 15),
+        ("Flowchart", "Screening → Enrollment → Treatment cycles → Assessment → Follow-up (months).", 15),
+        ("Possible Benefits", "Cemiplimab may shrink or control tumors and provides close medical monitoring for participants.", 10),
+        ("Possible Side Effects", "Immune-related side effects: fatigue, rash, diarrhea, fever, organ inflammation (liver, lungs, colon, thyroid). Severe events are possible; you may stop treatment at any time.", 15),
+        ("Confidentiality & Ethics", "This study follows GCP and the Declaration of Helsinki. Your safety and privacy are priorities. For participant rights visit the provided link.", 10),
+        ("Contact", "Conducted by Regeneron Pharmaceuticals, Inc. For questions contact the study team at: [Insert contact details].", 7),
+    ]
 
-clips = []
-for i, (title, text, dur) in enumerate(slides, start=1):
-    img_path = os.path.join(output_dir, f'slide_{i}.png')
-    create_slide_image(text, img_path, title=title)
-    audio_path = os.path.join(output_dir, f'slide_{i}.wav')
-    local_tts(text, audio_path)
+    slides = slides or default_slides
 
-    clip = ImageClip(img_path)
-    # moviepy API compatibility: prefer set_duration, fallback to with_duration
-    if hasattr(clip, 'set_duration'):
-        clip = clip.set_duration(dur)
-    elif hasattr(clip, 'with_duration'):
-        clip = clip.with_duration(dur)
-    else:
-        raise RuntimeError('No duration setter available on ImageClip')
+    output_dir_local = os.path.join(os.path.dirname(__file__), 'output')
+    os.makedirs(output_dir_local, exist_ok=True)
 
-    audio = AudioFileClip(audio_path)
-    # audio setter compatibility
-    if hasattr(clip, 'set_audio'):
-        clip = clip.set_audio(audio)
-    elif hasattr(clip, 'with_audio'):
-        clip = clip.with_audio(audio)
-    else:
-        print('Warning: could not attach audio to clip')
-    clips.append(clip)
+    clips = []
+    for i, (title, text, dur) in enumerate(slides, start=1):
+        img_path = os.path.join(output_dir_local, f'slide_{i}.png')
+        create_slide_image(text, img_path, title=title)
+        audio_path = os.path.join(output_dir_local, f'slide_{i}.wav')
+        local_tts(text, audio_path)
 
-final = concatenate_videoclips(clips, method='compose')
-final_path = os.path.join(output_dir, 'outline_video.mp4')
-final.write_videofile(final_path, fps=24)
+        clip = ImageClip(img_path)
+        # moviepy API compatibility: prefer set_duration, fallback to with_duration
+        if hasattr(clip, 'set_duration'):
+            clip = clip.set_duration(dur)
+        elif hasattr(clip, 'with_duration'):
+            clip = clip.with_duration(dur)
+        else:
+            raise RuntimeError('No duration setter available on ImageClip')
 
-print('Generated:', final_path)
+        audio = AudioFileClip(audio_path)
+        # audio setter compatibility
+        if hasattr(clip, 'set_audio'):
+            clip = clip.set_audio(audio)
+        elif hasattr(clip, 'with_audio'):
+            clip = clip.with_audio(audio)
+        else:
+            print('Warning: could not attach audio to clip')
+        clips.append(clip)
+
+    final = concatenate_videoclips(clips, method='compose')
+    final_path = os.path.join(output_dir_local, 'outline_video.mp4')
+    final.write_videofile(final_path, fps=24)
+
+    print('Generated:', final_path)
+
+
+if __name__ == '__main__':
+    # Preserve previous behavior when run directly for convenience
+    generate_default_outline_video()

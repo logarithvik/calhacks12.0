@@ -1,25 +1,36 @@
 {
   "segment_index": 0,
-  "raw_response": "```json\n{\n  \"visual_assets\": [\n    {\n      \"name\": \"blood vessel road\",\n      \"style\": \"flat cartoon illustration\",\n      \"purpose\": \"represents a blood vessel, like a road for molecules\",\n      \"prompt\": \"simple cartoon of a winding blood vessel, like a road, flat color, no shading\"\n    },\n    {\n      \"name\": \"fat molecules\",\n      \"style\": \"flat cartoon icon\",\n      \"purpose\": \"represents triglyceride molecules, like cars on the road\",\n      \"prompt\": \"small, yellow, circular fat molecules icon, flat cartoon, simple shapes, no details\"\n    },\n    {\n      \"name\": \"inflamed pancreas\",\n      \"style\": \"minimal medical icon\",\n      \"purpose\": \"symbolizes an inflamed pancreas (acute pancreatitis)\",\n      \"prompt\": \"simple cartoon icon of a pancreas, red and slightly swollen to show inflammation, flat color\"\n    }\n  ]\n}\n```",
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"Understanding High Triglycerides\",\n      \"visual_assets\": [\n        {\n          \"name\": \"triglyceride molecules\",\n          \"style\": \"flat cartoon molecules\",\n          \"purpose\": \"Represents fat energy stores circulating in the blood.\",\n          \"prompt\": \"simple cartoon of small, yellow, blob-like fat molecules, flat colors, no background\"\n        },\n        {\n          \"name\": \"blood vessel\",\n          \"style\": \"flat medical illustration\",\n          \"purpose\": \"Illustrates the circulatory system where triglycerides are transported.\",\n          \"prompt\": \"simple, tubular red blood vessel, flat cartoon style, no complex details, no background\"\n        },\n        {\n          \"name\": \"inflamed pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Depicts the organ affected by very high triglycerides, leading to pancreatitis.\",\n          \"prompt\": \"flat cartoon icon of a pancreas, slightly reddish and swollen to show inflammation, no text, no background\"\n        },\n        {\n          \"name\": \"thermometer icon\",\n          \"style\": \"simple medical icon\",\n          \"purpose\": \"Indicates fever or inflammation associated with acute pancreatitis.\",\n          \"prompt\": \"simple flat cartoon thermometer icon, red color bar to show high temperature, no text, no background\"\n        }\n      ]\n    }\n  ]\n}\n```",
   "parsed_response": {
-    "visual_assets": [
+    "segments": [
       {
-        "name": "blood vessel road",
-        "style": "flat cartoon illustration",
-        "purpose": "represents a blood vessel, like a road for molecules",
-        "prompt": "simple cartoon of a winding blood vessel, like a road, flat color, no shading"
-      },
-      {
-        "name": "fat molecules",
-        "style": "flat cartoon icon",
-        "purpose": "represents triglyceride molecules, like cars on the road",
-        "prompt": "small, yellow, circular fat molecules icon, flat cartoon, simple shapes, no details"
-      },
-      {
-        "name": "inflamed pancreas",
-        "style": "minimal medical icon",
-        "purpose": "symbolizes an inflamed pancreas (acute pancreatitis)",
-        "prompt": "simple cartoon icon of a pancreas, red and slightly swollen to show inflammation, flat color"
+        "section_title": "Understanding High Triglycerides",
+        "visual_assets": [
+          {
+            "name": "triglyceride molecules",
+            "style": "flat cartoon molecules",
+            "purpose": "Represents fat energy stores circulating in the blood.",
+            "prompt": "simple cartoon of small, yellow, blob-like fat molecules, flat colors, no background"
+          },
+          {
+            "name": "blood vessel",
+            "style": "flat medical illustration",
+            "purpose": "Illustrates the circulatory system where triglycerides are transported.",
+            "prompt": "simple, tubular red blood vessel, flat cartoon style, no complex details, no background"
+          },
+          {
+            "name": "inflamed pancreas",
+            "style": "minimal medical icon",
+            "purpose": "Depicts the organ affected by very high triglycerides, leading to pancreatitis.",
+            "prompt": "flat cartoon icon of a pancreas, slightly reddish and swollen to show inflammation, no text, no background"
+          },
+          {
+            "name": "thermometer icon",
+            "style": "simple medical icon",
+            "purpose": "Indicates fever or inflammation associated with acute pancreatitis.",
+            "prompt": "simple flat cartoon thermometer icon, red color bar to show high temperature, no text, no background"
+          }
+        ]
       }
     ]
   }

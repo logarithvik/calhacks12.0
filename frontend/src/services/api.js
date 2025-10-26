@@ -98,11 +98,6 @@ export const generationAPI = {
     return response.data;
   },
 
-  generateInfographic: async (trialId) => {
-    const response = await api.post(`/api/generate/infographic/${trialId}`);
-    return response.data;
-  },
-
   generateVideo: async (trialId) => {
     const response = await api.post(`/api/generate/video/${trialId}`);
     return response.data;

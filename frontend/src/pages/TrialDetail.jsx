@@ -46,9 +46,6 @@ const TrialDetail = () => {
           // Redirect to edit page after summary generation
           navigate(`/trial/${id}/summary/edit`);
           return;
-        case 'infographic':
-          result = await generationAPI.generateInfographic(id);
-          break;
         case 'video':
           result = await generationAPI.generateVideo(id);
           break;
@@ -92,7 +89,6 @@ const TrialDetail = () => {
   }
 
   const summaryContent = getContent('summary');
-  const infographicContent = getContent('infographic');
   const videoContent = getContent('video');
 
   return (
@@ -132,19 +128,6 @@ const TrialDetail = () => {
               contentId={summaryContent?.id}
             />
 
-            {/* Infographic Card */}
-            <GenerationCard
-              title="Infographic"
-              icon={<Image className="w-8 h-8 text-green-600" />}
-              description="Create visual summary for patients"
-              hasContent={!!infographicContent}
-              isGenerating={generating.infographic}
-              onGenerate={() => handleGenerate('infographic')}
-              contentId={infographicContent?.id}
-              disabled={!summaryContent}
-              disabledMessage="Generate summary first"
-            />
-
             {/* Video Card */}
             <GenerationCard
               title="Video"
@@ -176,22 +159,6 @@ const TrialDetail = () => {
                   <DetailSection title="Study Information" data={summaryData.structured_data} />
                 </div>
               )}
-            </div>
-          )}
-
-          {/* Infographic Display */}
-          {infographicContent && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-4">Infographic</h2>
-              <div className="bg-gray-100 rounded-lg p-8 text-center">
-                <Image className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">
-                  Infographic placeholder - In production, this would display the generated image
-                </p>
-                <p className="text-sm text-gray-500 mt-2">
-                  File: {infographicContent.file_path}
-                </p>
-              </div>
             </div>
           )}
 

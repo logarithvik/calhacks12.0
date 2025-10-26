@@ -101,7 +101,7 @@ const Dashboard = () => {
                   {trial.generated_content && trial.generated_content.length > 0 && (
                     <div className="mb-4 text-sm text-gray-600">
                       <p>Generated content:</p>
-                      <div className="flex flex-wrap gap-1 mt-1">
+                      <div className="flex flex-wrap gap-2 mt-1">
                         {trial.generated_content.map((content) => (
                           <span key={content.id} className="px-2 py-1 bg-indigo-50 text-indigo-700 rounded text-xs">
                             {content.content_type}

@@ -1,86 +1,34 @@
 {
   "segment_index": 1,
-  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"When Fats Get Too High\",\n      \"visual_assets\": [\n        {\n          \"name\": \"blood vessel road\",\n          \"style\": \"flat cartoon illustration\",\n          \"purpose\": \"Represents the circulatory system as a pathway where fats travel.\",\n          \"prompt\": \"simple flat cartoon illustration of a curving blood vessel, like a road, reddish-pink\"\n        },\n        {\n          \"name\": \"fat molecules traffic\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents triglycerides, in excess, creating a 'traffic jam'.\",\n          \"prompt\": \"many small, simple yellow circular fat molecules, like tiny cars, appearing congested in a line\"\n        },\n        {\n          \"name\": \"inflamed pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents the pancreas suffering from inflammation (acute pancreatitis).\",\n          \"prompt\": \"minimalistic flat cartoon icon of a pancreas organ, red and slightly jagged outline to indicate inflammation\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Releasing the Body's Brake\",\n      \"visual_assets\": [\n        {\n          \"name\": \"LPL enzyme\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents the LPL enzyme, which breaks down triglycerides.\",\n          \"prompt\": \"flat cartoon icon of a simple enzyme shape, light green, with a subtle internal gear or action symbol\"\n        },\n        {\n          \"name\": \"triglyceride molecule\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents a fat molecule to be broken down by LPL.\",\n          \"prompt\": \"minimalistic icon of a simple rounded fat molecule, yellow color, flat style\"\n        },\n        {\n          \"name\": \"ANGPTL3 brake\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"Represents the ANGPTL3 protein, which inhibits LPL activity.\",\n          \"prompt\": \"flat cartoon icon of a 'brake' pedal symbol or a stop sign shape, red color, representing inhibition, minimalistic\"\n        },\n        {\n          \"name\": \"evinacumab medicine\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents the evinacumab drug, which blocks the ANGPTL3 'brake'.\",\n          \"prompt\": \"minimalistic icon of a medicine molecule, small rounded capsule shape, blue color, flat style\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Toward a Healthier Future\",\n      \"visual_assets\": [\n        {\n          \"name\": \"healthy active person\",\n          \"style\": \"flat cartoon illustration\",\n          \"purpose\": \"Represents improved patient health and well-being after treatment.\",\n          \"prompt\": \"flat cartoon illustration of a smiling, active person, simple and energetic pose, calm colors\"\n        },\n        {\n          \"name\": \"clear blood vessel\",\n          \"style\": \"flat cartoon illustration\",\n          \"purpose\": \"Symbolizes healthy, unobstructed blood flow due to lower triglycerides.\",\n          \"prompt\": \"simple flat cartoon illustration of a clear, open blood vessel with smooth flow, light pink color\"\n        },\n        {\n          \"name\": \"calm pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Represents a healthy, non-inflamed pancreas.\",\n          \"prompt\": \"minimalistic flat cartoon icon of a pancreas organ, light green or blue, smooth and calm outline\"\n        },\n        {\n          \"name\": \"upward trend arrow\",\n          \"style\": \"flat icon\",\n          \"purpose\": \"Indicates positive progress, reduced risk of pancreatitis, or improved health outcome.\",\n          \"prompt\": \"simple flat icon of a thick upward-pointing arrow or graph trend line, green color, indicating positive direction\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"Releasing the Brakes on Triglycerides\",\n      \"visual_assets\": [\n        {\n          \"name\": \"triglyceride molecule\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents fat molecules in the bloodstream\",\n          \"prompt\": \"simple flat cartoon triglyceride molecule, small fat droplet shape, yellow-orange color, minimal detail\"\n        },\n        {\n          \"name\": \"LPL enzyme\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the enzyme that breaks down triglycerides\",\n          \"prompt\": \"simple flat cartoon enzyme icon, active abstract shape, light green, minimal detail\"\n        },\n        {\n          \"name\": \"ANGPTL3 protein (brake)\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the protein that inhibits LPL activity\",\n          \"prompt\": \"simple flat cartoon protein icon, mechanical brake symbol, deep red color, minimal detail\"\n        },\n        {\n          \"name\": \"evinacumab molecule\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the investigational drug that blocks ANGPTL3\",\n          \"prompt\": \"simple flat cartoon medicine molecule icon, unique rounded shape, bright blue color, minimal detail\"\n        }\n      ]\n    }\n  ]\n}\n```",
   "parsed_response": {
     "segments": [
       {
-        "section_title": "When Fats Get Too High",
+        "section_title": "Releasing the Brakes on Triglycerides",
         "visual_assets": [
-          {
-            "name": "blood vessel road",
-            "style": "flat cartoon illustration",
-            "purpose": "Represents the circulatory system as a pathway where fats travel.",
-            "prompt": "simple flat cartoon illustration of a curving blood vessel, like a road, reddish-pink"
-          },
-          {
-            "name": "fat molecules traffic",
-            "style": "flat cartoon icon",
-            "purpose": "Represents triglycerides, in excess, creating a 'traffic jam'.",
-            "prompt": "many small, simple yellow circular fat molecules, like tiny cars, appearing congested in a line"
-          },
-          {
-            "name": "inflamed pancreas",
-            "style": "minimal medical icon",
-            "purpose": "Represents the pancreas suffering from inflammation (acute pancreatitis).",
-            "prompt": "minimalistic flat cartoon icon of a pancreas organ, red and slightly jagged outline to indicate inflammation"
-          }
-        ]
-      },
-      {
-        "section_title": "Releasing the Body's Brake",
-        "visual_assets": [
-          {
-            "name": "LPL enzyme",
-            "style": "flat cartoon icon",
-            "purpose": "Represents the LPL enzyme, which breaks down triglycerides.",
-            "prompt": "flat cartoon icon of a simple enzyme shape, light green, with a subtle internal gear or action symbol"
-          },
           {
             "name": "triglyceride molecule",
-            "style": "minimal medical icon",
-            "purpose": "Represents a fat molecule to be broken down by LPL.",
-            "prompt": "minimalistic icon of a simple rounded fat molecule, yellow color, flat style"
+            "style": "flat cartoon medical icon",
+            "purpose": "represents fat molecules in the bloodstream",
+            "prompt": "simple flat cartoon triglyceride molecule, small fat droplet shape, yellow-orange color, minimal detail"
           },
           {
-            "name": "ANGPTL3 brake",
-            "style": "flat cartoon icon",
-            "purpose": "Represents the ANGPTL3 protein, which inhibits LPL activity.",
-            "prompt": "flat cartoon icon of a 'brake' pedal symbol or a stop sign shape, red color, representing inhibition, minimalistic"
+            "name": "LPL enzyme",
+            "style": "flat cartoon medical icon",
+            "purpose": "represents the enzyme that breaks down triglycerides",
+            "prompt": "simple flat cartoon enzyme icon, active abstract shape, light green, minimal detail"
           },
           {
-            "name": "evinacumab medicine",
-            "style": "minimal medical icon",
-            "purpose": "Represents the evinacumab drug, which blocks the ANGPTL3 'brake'.",
-            "prompt": "minimalistic icon of a medicine molecule, small rounded capsule shape, blue color, flat style"
-          }
-        ]
-      },
-      {
-        "section_title": "Toward a Healthier Future",
-        "visual_assets": [
-          {
-            "name": "healthy active person",
-            "style": "flat cartoon illustration",
-            "purpose": "Represents improved patient health and well-being after treatment.",
-            "prompt": "flat cartoon illustration of a smiling, active person, simple and energetic pose, calm colors"
+            "name": "ANGPTL3 protein (brake)",
+            "style": "flat cartoon medical icon",
+            "purpose": "represents the protein that inhibits LPL activity",
+            "prompt": "simple flat cartoon protein icon, mechanical brake symbol, deep red color, minimal detail"
           },
           {
-            "name": "clear blood vessel",
-            "style": "flat cartoon illustration",
-            "purpose": "Symbolizes healthy, unobstructed blood flow due to lower triglycerides.",
-            "prompt": "simple flat cartoon illustration of a clear, open blood vessel with smooth flow, light pink color"
-          },
-          {
-            "name": "calm pancreas",
-            "style": "minimal medical icon",
-            "purpose": "Represents a healthy, non-inflamed pancreas.",
-            "prompt": "minimalistic flat cartoon icon of a pancreas organ, light green or blue, smooth and calm outline"
-          },
-          {
-            "name": "upward trend arrow",
-            "style": "flat icon",
-            "purpose": "Indicates positive progress, reduced risk of pancreatitis, or improved health outcome.",
-            "prompt": "simple flat icon of a thick upward-pointing arrow or graph trend line, green color, indicating positive direction"
+            "name": "evinacumab molecule",
+            "style": "flat cartoon medical icon",
+            "purpose": "represents the investigational drug that blocks ANGPTL3",
+            "prompt": "simple flat cartoon medicine molecule icon, unique rounded shape, bright blue color, minimal detail"
           }
         ]
       }

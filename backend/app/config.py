@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     # Optional: AI API Keys (add when ready to implement agents)
     openai_api_key: str = ""
     anthropic_api_key: str = ""
+    gemini_api_key: str = ""
     
     # File Upload
     upload_dir: str = "uploads"

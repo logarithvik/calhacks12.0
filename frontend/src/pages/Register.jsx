@@ -42,11 +42,19 @@ const Register = () => {
       });
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      //console.error("Registration error:", err);
+
+      const message =
+        err.response?.data?.detail ||
+        err.response?.data?.error ||
+        err.message ||
+        'Registration failed.';
+
+      setError(`Registration failed: ${JSON.stringify(message)}`);
+      } finally {
+        setLoading(false);
+      }
+      };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

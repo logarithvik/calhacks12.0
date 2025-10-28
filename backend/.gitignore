@@ -1,13 +1,56 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Environment variables and secrets
 .env
+.env.*
+!.env.example
+.envrc
 .venv
 venv/
 ENV/
+env/
+env.bak/
+venv.bak/
+
+# Uploads and generated content
 uploads/*
 !uploads/.gitkeep
+outputs/*
+images/*
+pptx_slides/*
+
+# Database files
 *.db
 *.sqlite3
+*.sqlite
+db.sqlite3
+
+# IDE and OS files
 .DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# API Keys and secrets (extra protection)
+*secret*
+*key*.txt
+*token*.txt
+*.pem
+*.key
+*.cer
+*.crt
+
+# Temporary files
+tmp/
+temp/
+*.tmp

@@ -13,4 +13,12 @@ email-validator>=2.1.0
 google-generativeai>=0.8.0
 Pillow>=10.0.0
 requests>=2.31.0
+
+# Video generation dependencies
 rembg>=2.0.50
+onnxruntime>=1.16.0
+pyttsx3>=2.90
+
+# Optional but recommended for better performance
+# numpy>=1.24.0  # Usually comes with other packages
+# opencv-python>=4.8.0  # For advanced image processing if needed

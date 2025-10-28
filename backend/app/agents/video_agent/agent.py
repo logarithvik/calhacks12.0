@@ -539,26 +539,35 @@ def tts_synthesize(text: str, out_path: str, voice: str = "alloy", cheerful: boo
     """Create an audio file for the narration. Prefer ElevenLabs if key provided; otherwise fallback to local pyttsx3 if available.
 
     Returns path to audio file (wav)
+    Raises RuntimeError if no TTS service is available.
     """
     if ELEVENLABS_API_KEY:
         # Minimal ElevenLabs example using their text-to-speech API
         url = "https://api.elevenlabs.io/v1/text-to-speech/" + voice
         headers = {"xi-api-key": ELEVENLABS_API_KEY, "Content-Type": "application/json"}
         body = {"text": text, "voice_settings": {"stability":0.6, "similarity_boost":0.6}}
-        resp = requests.post(url, headers=headers, json=body, timeout=30)
-        resp.raise_for_status()
-        with open(out_path, "wb") as f:
-            f.write(resp.content)
-        return out_path
+        try:
+            resp = requests.post(url, headers=headers, json=body, timeout=30)
+            resp.raise_for_status()
+            with open(out_path, "wb") as f:
+                f.write(resp.content)
+            return out_path
+        except Exception as e:
+            logging.error("ElevenLabs TTS failed: %s", e)
+            raise RuntimeError(f"ElevenLabs TTS failed: {str(e)}")
 
     if TTS_LOCAL_AVAILABLE:
-        engine = pyttsx3.init()
-        engine.setProperty('rate', 150)
-        engine.save_to_file(text, out_path)
-        engine.runAndWait()
-        return out_path
+        try:
+            engine = pyttsx3.init()
+            engine.setProperty('rate', 150)
+            engine.save_to_file(text, out_path)
+            engine.runAndWait()
+            return out_path
+        except Exception as e:
+            logging.error("Local TTS (pyttsx3) failed: %s", e)
+            raise RuntimeError(f"Local TTS failed: {str(e)}")
 
-    raise RuntimeError("No TTS available: provide ELEVENLABS_API_KEY or install pyttsx3")
+    raise RuntimeError("No TTS available: ELEVENLABS_API_KEY not configured and pyttsx3 not installed. Please provide ELEVENLABS_API_KEY in environment variables or install pyttsx3.")
 
 
 def stage6_create_ffmpeg_slides(
@@ -945,11 +954,18 @@ def stage7_compose_video(slides_path: str = os.path.join(OUT_DIR, "step4_slides.
         audio_path = os.path.join(temp_dir, f"slide_{i}.wav")
         try:
             tts_synthesize(narration, audio_path)
+            logging.info("✓ Generated audio for slide %d", i)
             
+        except RuntimeError as e:
+            # TTS failed - this is a critical error, clean up and propagate
+            logging.error("Audio generation failed for slide %d: %s", i, e)
+            shutil.rmtree(temp_dir, ignore_errors=True)
+            raise RuntimeError(f"Failed to generate audio for slide {i}: {str(e)}. Video creation cannot continue without audio narration.") from e
         except Exception as e:
-            logging.warning("TTS failed for slide %s: %s — creating silent placeholder", i, e)
-            # create silent wav using ffmpeg
-            subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", f"anullsrc=r=44100:cl=mono", "-t", str(duration), audio_path], check=False)
+            # Unexpected error
+            logging.error("Unexpected error during TTS for slide %d: %s", i, e)
+            shutil.rmtree(temp_dir, ignore_errors=True)
+            raise RuntimeError(f"Unexpected error generating audio for slide {i}: {str(e)}") from e
 
         try:
             audio_length_cmd = [

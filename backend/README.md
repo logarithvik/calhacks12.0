@@ -18,6 +18,36 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+**Important:** The application requires several system-level dependencies for video generation:
+
+- **ffmpeg**: Required for video composition and slide creation
+  ```bash
+  # macOS:
+  brew install ffmpeg
+  
+  # Ubuntu/Debian:
+  sudo apt-get install ffmpeg
+  
+  # Windows:
+  # Download from https://ffmpeg.org/download.html
+  ```
+
+- **Python packages** (automatically installed with requirements.txt):
+  - `rembg>=2.0.50` - Background removal for images
+  - `onnxruntime>=1.16.0` - Runtime for rembg (ML model inference)
+  - `pyttsx3>=2.90` - Local text-to-speech fallback
+  - `Pillow>=10.0.0` - Image processing
+  - `google-generativeai>=0.8.0` - Google Gemini AI integration
+
+**Note on TTS**: For production video generation, configure the `ELEVENLABS_API_KEY` in your `.env` file for high-quality voice synthesis. `pyttsx3` provides a local fallback but with lower quality.
+
+**Verify Installation:**
+After installing dependencies, run the dependency checker:
+```bash
+python check_dependencies.py
+```
+This will verify all packages are properly installed and identify any missing system dependencies.
+
 ### 3. Setup PostgreSQL Database
 
 ```bash
@@ -134,12 +164,27 @@ open http://localhost:8000/docs
 ## Environment Variables
 
 ```
+# Database
 DATABASE_URL=postgresql://postgres:password@localhost:5432/trial_edu_db
+
+# Authentication
 SECRET_KEY=your-secret-key-change-this
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-# Optional: AI API Keys
-OPENAI_API_KEY=your-key
-ANTHROPIC_API_KEY=your-key
+# AI API Keys (Required)
+GEMINI_API_KEY=your-gemini-api-key
+
+# Video Generation (Optional but recommended for high-quality TTS)
+ELEVENLABS_API_KEY=your-elevenlabs-api-key
+
+# Gemini Model Configuration (Optional)
+GEMINI_MODEL_NAME=gemini-2.5-flash
+GEMINI_TEMPERATURE=0.2
 ```
+
+**Required API Keys:**
+- `GEMINI_API_KEY`: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+- `ELEVENLABS_API_KEY`: (Optional) Get from [ElevenLabs](https://elevenlabs.io/) for production-quality text-to-speech
+
+**Note:** Without `ELEVENLABS_API_KEY`, the system will fall back to `pyttsx3` for local text-to-speech, which may have lower quality audio output.

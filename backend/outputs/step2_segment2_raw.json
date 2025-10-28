@@ -1,34 +1,92 @@
 {
   "segment_index": 2,
-  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"A New Path to Healthier Levels\",\n      \"visual_assets\": [\n        {\n          \"name\": \"confident patient\",\n          \"style\": \"flat cartoon illustration\",\n          \"purpose\": \"represents a patient achieving better health and peace of mind\",\n          \"prompt\": \"flat cartoon illustration of a human figure walking confidently, minimalistic, optimistic pose, bright colors\"\n        },\n        {\n          \"name\": \"clear path\",\n          \"style\": \"minimal flat illustration\",\n          \"purpose\": \"symbolizes a path to recovery or better health outcomes\",\n          \"prompt\": \"simple flat illustration of a winding clear path or road, light grey color, cartoon style\"\n        },\n        {\n          \"name\": \"healthy pancreas icon\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"represents a healthy, non-inflamed pancreas\",\n          \"prompt\": \"clean minimal medical icon of a healthy pancreas, calm green color, flat cartoon style\"\n        },\n        {\n          \"name\": \"downward trend arrow\",\n          \"style\": \"minimal infographic icon\",\n          \"purpose\": \"indicates a significant decrease in triglyceride levels\",\n          \"prompt\": \"simple flat icon of a large downward-pointing arrow, bright green color, representing reduction, cartoon style\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"The COVID-19 Invader\",\n      \"visual_assets\": [\n        {\n          \"name\": \"COVID-19 virus\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"represents the SARS-CoV-2 pathogen\",\n          \"prompt\": \"simple flat cartoon spherical virus, covered in small red spike proteins, minimal detail\"\n        },\n        {\n          \"name\": \"Spike protein key\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"symbolizes how the virus unlocks cells\",\n          \"prompt\": \"isolated flat cartoon spike protein shaped like a simple key, red color, minimal detail\"\n        },\n        {\n          \"name\": \"Human cell with receptor\",\n          \"style\": \"flat cartoon medical\",\n          \"purpose\": \"represents target cell for infection\",\n          \"prompt\": \"simple flat cartoon human cell, smooth blue membrane, with a small yellow 'lock' shaped receptor on its surface\"\n        },\n        {\n          \"name\": \"Arrow icon\",\n          \"style\": \"flat graphic icon\",\n          \"purpose\": \"indicates direction of movement or entry\",\n          \"prompt\": \"simple flat cartoon arrow pointing right, light grey, minimal design\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Teaching Your Body to Defend\",\n      \"visual_assets\": [\n        {\n          \"name\": \"Adenovirus vaccine vector\",\n          \"style\": \"flat cartoon medical\",\n          \"purpose\": \"represents the vaccine's delivery mechanism\",\n          \"prompt\": \"simple flat cartoon modified adenovirus, non-spiky, resembling a small green delivery truck, no text\"\n        },\n        {\n          \"name\": \"Human cell\",\n          \"style\": \"flat cartoon medical\",\n          \"purpose\": \"represents the cell receiving instructions\",\n          \"prompt\": \"simple flat cartoon human cell, smooth blue membrane, no internal details\"\n        },\n        {\n          \"name\": \"Genetic instruction scroll\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"symbolizes genetic code delivered by vaccine\",\n          \"prompt\": \"simple flat cartoon scroll icon, partially unrolled, with generic instruction lines, purple color, minimal detail\"\n        },\n        {\n          \"name\": \"Isolated Spike protein\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"represents the protein produced by the cell\",\n          \"prompt\": \"simple flat cartoon isolated red spike protein shape, floating freely\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Ready for Action\",\n      \"visual_assets\": [\n        {\n          \"name\": \"Human body outline\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"context for internal biological processes\",\n          \"prompt\": \"simple flat cartoon outline of a human torso, light blue color, no details\"\n        },\n        {\n          \"name\": \"COVID-19 virus\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"represents the SARS-CoV-2 pathogen\",\n          \"prompt\": \"simple flat cartoon spherical virus, covered in small red spike proteins, minimal detail\"\n        },\n        {\n          \"name\": \"Antibody icon\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"represents a specific immune defender\",\n          \"prompt\": \"flat cartoon Y-shaped antibody icon, light green, simple and clean\"\n        },\n        {\n          \"name\": \"Immune cell icon\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"represents a general immune defender\",\n          \"prompt\": \"simple flat cartoon circular immune cell icon, slightly irregular shape, pale yellow\"\n        }\n      ]\n    }\n  ]\n}\n```",
   "parsed_response": {
     "segments": [
       {
-        "section_title": "A New Path to Healthier Levels",
+        "section_title": "The COVID-19 Invader",
         "visual_assets": [
           {
-            "name": "confident patient",
-            "style": "flat cartoon illustration",
-            "purpose": "represents a patient achieving better health and peace of mind",
-            "prompt": "flat cartoon illustration of a human figure walking confidently, minimalistic, optimistic pose, bright colors"
+            "name": "COVID-19 virus",
+            "style": "flat cartoon icon",
+            "purpose": "represents the SARS-CoV-2 pathogen",
+            "prompt": "simple flat cartoon spherical virus, covered in small red spike proteins, minimal detail"
           },
           {
-            "name": "clear path",
-            "style": "minimal flat illustration",
-            "purpose": "symbolizes a path to recovery or better health outcomes",
-            "prompt": "simple flat illustration of a winding clear path or road, light grey color, cartoon style"
+            "name": "Spike protein key",
+            "style": "flat cartoon icon",
+            "purpose": "symbolizes how the virus unlocks cells",
+            "prompt": "isolated flat cartoon spike protein shaped like a simple key, red color, minimal detail"
           },
           {
-            "name": "healthy pancreas icon",
-            "style": "minimal medical icon",
-            "purpose": "represents a healthy, non-inflamed pancreas",
-            "prompt": "clean minimal medical icon of a healthy pancreas, calm green color, flat cartoon style"
+            "name": "Human cell with receptor",
+            "style": "flat cartoon medical",
+            "purpose": "represents target cell for infection",
+            "prompt": "simple flat cartoon human cell, smooth blue membrane, with a small yellow 'lock' shaped receptor on its surface"
           },
           {
-            "name": "downward trend arrow",
-            "style": "minimal infographic icon",
-            "purpose": "indicates a significant decrease in triglyceride levels",
-            "prompt": "simple flat icon of a large downward-pointing arrow, bright green color, representing reduction, cartoon style"
+            "name": "Arrow icon",
+            "style": "flat graphic icon",
+            "purpose": "indicates direction of movement or entry",
+            "prompt": "simple flat cartoon arrow pointing right, light grey, minimal design"
+          }
+        ]
+      },
+      {
+        "section_title": "Teaching Your Body to Defend",
+        "visual_assets": [
+          {
+            "name": "Adenovirus vaccine vector",
+            "style": "flat cartoon medical",
+            "purpose": "represents the vaccine's delivery mechanism",
+            "prompt": "simple flat cartoon modified adenovirus, non-spiky, resembling a small green delivery truck, no text"
+          },
+          {
+            "name": "Human cell",
+            "style": "flat cartoon medical",
+            "purpose": "represents the cell receiving instructions",
+            "prompt": "simple flat cartoon human cell, smooth blue membrane, no internal details"
+          },
+          {
+            "name": "Genetic instruction scroll",
+            "style": "flat cartoon icon",
+            "purpose": "symbolizes genetic code delivered by vaccine",
+            "prompt": "simple flat cartoon scroll icon, partially unrolled, with generic instruction lines, purple color, minimal detail"
+          },
+          {
+            "name": "Isolated Spike protein",
+            "style": "flat cartoon icon",
+            "purpose": "represents the protein produced by the cell",
+            "prompt": "simple flat cartoon isolated red spike protein shape, floating freely"
+          }
+        ]
+      },
+      {
+        "section_title": "Ready for Action",
+        "visual_assets": [
+          {
+            "name": "Human body outline",
+            "style": "flat cartoon icon",
+            "purpose": "context for internal biological processes",
+            "prompt": "simple flat cartoon outline of a human torso, light blue color, no details"
+          },
+          {
+            "name": "COVID-19 virus",
+            "style": "flat cartoon icon",
+            "purpose": "represents the SARS-CoV-2 pathogen",
+            "prompt": "simple flat cartoon spherical virus, covered in small red spike proteins, minimal detail"
+          },
+          {
+            "name": "Antibody icon",
+            "style": "flat medical icon",
+            "purpose": "represents a specific immune defender",
+            "prompt": "flat cartoon Y-shaped antibody icon, light green, simple and clean"
+          },
+          {
+            "name": "Immune cell icon",
+            "style": "flat medical icon",
+            "purpose": "represents a general immune defender",
+            "prompt": "simple flat cartoon circular immune cell icon, slightly irregular shape, pale yellow"
           }
         ]
       }

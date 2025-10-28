@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { trialsAPI, generationAPI } from '../services/api';
-import { ArrowLeft, FileText, Image, Video, Loader, CheckCircle } from 'lucide-react';
+import { ArrowLeft, FileText, Image, Video, Loader, CheckCircle, Play } from 'lucide-react';
 import Navbar from '../components/Navbar';
 
 const TrialDetail = () => {
@@ -92,34 +92,40 @@ const TrialDetail = () => {
   const videoContent = getContent('video');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50">
       <Navbar />
       
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700 mb-6"
+            className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-700 mb-6 font-medium transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Dashboard</span>
           </button>
 
-          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{trial.title}</h1>
+          <div className="soft-card mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+              {trial.title}
+            </h1>
             {trial.original_filename && (
-              <p className="text-gray-600 mb-2">📄 {trial.original_filename}</p>
+              <div className="flex items-center space-x-2 text-gray-600 mb-2 bg-gray-50 px-4 py-2 rounded-lg inline-flex">
+                <FileText className="w-5 h-5 text-indigo-500" />
+                <span className="font-medium">{trial.original_filename}</span>
+              </div>
             )}
-            <p className="text-sm text-gray-500">
-              Created: {new Date(trial.created_at).toLocaleDateString()}
+            <p className="text-sm text-gray-500 mt-3">
+              Created {new Date(trial.created_at).toLocaleDateString()}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {/* Summary Card */}
             <GenerationCard
               title="Summary"
-              icon={<FileText className="w-8 h-8 text-indigo-600" />}
+              icon={<FileText className="w-8 h-8" />}
+              iconColor="indigo"
               description="Extract key information from the protocol"
               hasContent={!!summaryContent}
               isGenerating={generating.summary}
@@ -131,7 +137,8 @@ const TrialDetail = () => {
             {/* Video Card */}
             <GenerationCard
               title="Video"
-              icon={<Video className="w-8 h-8 text-purple-600" />}
+              icon={<Video className="w-8 h-8" />}
+              iconColor="purple"
               description="Generate educational video"
               hasContent={!!videoContent}
               isGenerating={generating.video}
@@ -145,12 +152,12 @@ const TrialDetail = () => {
 
           {/* Summary Display */}
           {summaryData && (
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold mb-4">Trial Summary</h2>
+            <div className="soft-card mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Trial Summary</h2>
               
               {summaryData.simple_summary && (
-                <div className="prose max-w-none mb-6">
-                  <pre className="whitespace-pre-wrap font-sans">{summaryData.simple_summary}</pre>
+                <div className="prose max-w-none mb-6 bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-xl">
+                  <pre className="whitespace-pre-wrap font-sans text-gray-700">{summaryData.simple_summary}</pre>
                 </div>
               )}
 
@@ -164,16 +171,25 @@ const TrialDetail = () => {
 
           {/* Video Display */}
           {videoContent && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold mb-4">Educational Video</h2>
-              <div className="bg-gray-100 rounded-lg p-8 text-center">
-                <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600">
-                  Video placeholder - In production, this would be an embedded video player
+            <div className="soft-card">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Educational Video</h2>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-8 text-center">
+                <div className="icon-purple inline-flex mb-4">
+                  <Video className="w-12 h-12" />
+                </div>
+                <p className="text-gray-700 mb-3 font-medium">
+                  Video generated successfully!
                 </p>
-                <p className="text-sm text-gray-500 mt-2">
-                  File: {videoContent.file_path}
+                <p className="text-sm text-gray-600 mb-4">
+                  {videoContent.file_path}
                 </p>
+                <button
+                  onClick={() => navigate(`/trial/${id}/video/${videoContent.id}`)}
+                  className="btn-gradient inline-flex items-center space-x-2"
+                >
+                  <Play className="w-5 h-5" />
+                  <span>Watch Video</span>
+                </button>
               </div>
             </div>
           )}
@@ -185,7 +201,8 @@ const TrialDetail = () => {
 
 const GenerationCard = ({ 
   title, 
-  icon, 
+  icon,
+  iconColor = 'indigo',
   description, 
   hasContent, 
   isGenerating, 
@@ -196,28 +213,32 @@ const GenerationCard = ({
   disabled,
   disabledMessage 
 }) => {
+  const iconClass = `icon-${iconColor}`;
+  
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="soft-card card-hover">
       <div className="flex items-center space-x-3 mb-4">
-        {icon}
-        <h3 className="text-xl font-semibold">{title}</h3>
+        <div className={iconClass}>
+          {icon}
+        </div>
+        <h3 className="text-xl font-bold text-gray-900">{title}</h3>
       </div>
       
       <p className="text-gray-600 mb-4">{description}</p>
       
       {hasContent && (
-        <div className="flex items-center space-x-2 text-green-600 mb-3">
-          <CheckCircle className="w-5 h-5" />
-          <span className="text-sm font-medium">Generated</span>
+        <div className="inline-flex items-center space-x-2 px-3 py-1.5 bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-800 rounded-full text-xs font-bold border border-emerald-200 shadow-sm mb-4">
+          <CheckCircle className="w-4 h-4" />
+          <span>Generated Successfully</span>
         </div>
       )}
       
       {hasContent && (onEdit || onView) ? (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {onEdit && (
             <button
               onClick={onEdit}
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+              className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
             >
               <FileText className="w-5 h-5" />
               <span>Edit Summary</span>
@@ -226,7 +247,7 @@ const GenerationCard = ({
           {onView && (
             <button
               onClick={onView}
-              className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+              className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg"
             >
               <Video className="w-5 h-5" />
               <span>View Video</span>
@@ -235,7 +256,7 @@ const GenerationCard = ({
           <button
             onClick={onGenerate}
             disabled={isGenerating}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition-colors"
+            className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-lg hover:from-gray-200 hover:to-gray-300 transition-all duration-300 font-medium border border-gray-300"
           >
             {isGenerating ? (
               <>
@@ -251,12 +272,12 @@ const GenerationCard = ({
         <button
           onClick={onGenerate}
           disabled={isGenerating || disabled}
-          className={`w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-md transition-colors ${
+          className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 font-semibold shadow-md ${
             disabled
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
               : hasContent
-              ? 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200'
-              : 'bg-indigo-600 text-white hover:bg-indigo-700'
+              ? 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-gray-200 hover:to-gray-300 border border-gray-300'
+              : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 hover:shadow-lg'
           }`}
           title={disabled ? disabledMessage : ''}
         >
@@ -272,7 +293,9 @@ const GenerationCard = ({
       )}
       
       {disabled && disabledMessage && (
-        <p className="text-xs text-gray-500 mt-2 text-center">{disabledMessage}</p>
+        <p className="text-sm text-gray-600 mt-3 text-center bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
+          {disabledMessage}
+        </p>
       )}
     </div>
   );
@@ -280,8 +303,8 @@ const GenerationCard = ({
 
 const DetailSection = ({ title, data }) => {
   return (
-    <div className="border-t pt-4">
-      <h3 className="text-lg font-semibold mb-3">{title}</h3>
+    <div className="border-t border-gray-200 pt-6">
+      <h3 className="text-xl font-bold text-gray-900 mb-4">{title}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {Object.entries(data).map(([key, value]) => {
           if (typeof value === 'object' && !Array.isArray(value)) {
@@ -289,19 +312,21 @@ const DetailSection = ({ title, data }) => {
           }
           
           return (
-            <div key={key} className="bg-gray-50 p-3 rounded">
-              <dt className="text-sm font-medium text-gray-500 capitalize mb-1">
+            <div key={key} className="bg-gradient-to-br from-indigo-50 to-purple-50 p-4 rounded-lg border border-indigo-100">
+              <dt className="text-sm font-semibold text-indigo-700 capitalize mb-2">
                 {key.replace(/_/g, ' ')}
               </dt>
               <dd className="text-sm text-gray-900">
                 {Array.isArray(value) ? (
-                  <ul className="list-disc list-inside">
+                  <ul className="list-disc list-inside space-y-1">
                     {value.map((item, i) => (
-                      <li key={i}>{typeof item === 'object' ? JSON.stringify(item) : item}</li>
+                      <li key={i} className="text-gray-700">
+                        {typeof item === 'object' ? JSON.stringify(item) : item}
+                      </li>
                     ))}
                   </ul>
                 ) : (
-                  value?.toString() || 'N/A'
+                  <span className="font-medium">{value?.toString() || 'N/A'}</span>
                 )}
               </dd>
             </div>

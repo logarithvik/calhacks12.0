@@ -1,34 +1,98 @@
 {
   "segment_index": 1,
-  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"Releasing the Brakes on Triglycerides\",\n      \"visual_assets\": [\n        {\n          \"name\": \"triglyceride molecule\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents fat molecules in the bloodstream\",\n          \"prompt\": \"simple flat cartoon triglyceride molecule, small fat droplet shape, yellow-orange color, minimal detail\"\n        },\n        {\n          \"name\": \"LPL enzyme\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the enzyme that breaks down triglycerides\",\n          \"prompt\": \"simple flat cartoon enzyme icon, active abstract shape, light green, minimal detail\"\n        },\n        {\n          \"name\": \"ANGPTL3 protein (brake)\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the protein that inhibits LPL activity\",\n          \"prompt\": \"simple flat cartoon protein icon, mechanical brake symbol, deep red color, minimal detail\"\n        },\n        {\n          \"name\": \"evinacumab molecule\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"represents the investigational drug that blocks ANGPTL3\",\n          \"prompt\": \"simple flat cartoon medicine molecule icon, unique rounded shape, bright blue color, minimal detail\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"The COVID-19 Invader\",\n      \"visual_assets\": [\n        {\n          \"name\": \"COVID-19 virus\",\n          \"style\": \"flat cartoon, minimal medical icon\",\n          \"purpose\": \"represents the SARS-CoV-2 virus, the invader\",\n          \"prompt\": \"simple flat cartoon of a spherical virus, dark red, covered in small spike proteins\"\n        },\n        {\n          \"name\": \"healthy human cell\",\n          \"style\": \"flat cartoon, minimal medical icon\",\n          \"purpose\": \"represents a target human cell for infection\",\n          \"prompt\": \"simple flat cartoon of a circular human cell, light blue, smooth membrane\"\n        },\n        {\n          \"name\": \"Spike protein key\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"illustrates how the spike protein binds to the cell\",\n          \"prompt\": \"flat cartoon icon of a key shape, red, representing a virus spike protein\"\n        },\n        {\n          \"name\": \"cell receptor lock\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"illustrates the binding site on a human cell\",\n          \"prompt\": \"flat cartoon icon of a lock shape, light blue, integrated into a cell membrane\"\n        },\n        {\n          \"name\": \"virus entry arrow\",\n          \"style\": \"flat icon\",\n          \"purpose\": \"visualizes the virus entering the cell\",\n          \"prompt\": \"simple flat cartoon arrow pointing right, blue, indicating movement into a cell\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Teaching Your Body to Defend\",\n      \"visual_assets\": [\n        {\n          \"name\": \"adenovirus delivery truck\",\n          \"style\": \"flat cartoon, minimal medical icon\",\n          \"purpose\": \"represents the vaccine's viral vector, delivering instructions\",\n          \"prompt\": \"simple flat cartoon of a modified adenovirus, grey and green, resembling a small delivery truck icon\"\n        },\n        {\n          \"name\": \"human cell (vaccine target)\",\n          \"style\": \"flat cartoon, minimal medical icon\",\n          \"purpose\": \"represents the target human cell for vaccine delivery\",\n          \"prompt\": \"simple flat cartoon of a circular human cell, light blue, smooth membrane\"\n        },\n        {\n          \"name\": \"genetic instructions scroll\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"represents the genetic code delivered by the vaccine\",\n          \"prompt\": \"flat cartoon icon of a rolled-up scroll or instruction sheet, yellow, symbolizing genetic instructions\"\n        },\n        {\n          \"name\": \"isolated spike proteins\",\n          \"style\": \"flat cartoon icon\",\n          \"purpose\": \"represents the vaccine-induced spike protein production by the cell\",\n          \"prompt\": \"multiple small, isolated red spike protein icons, floating freely, simple flat cartoon\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Ready for Action\",\n      \"visual_assets\": [\n        {\n          \"name\": \"healthy person silhouette\",\n          \"style\": \"flat cartoon silhouette\",\n          \"purpose\": \"represents the vaccinated individual protected by immunity\",\n          \"prompt\": \"simple flat cartoon silhouette of a healthy person, light green, profile view\"\n        },\n        {\n          \"name\": \"antibody defenders\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"represents antibodies, key components of the immune response\",\n          \"prompt\": \"flat cartoon icon of a Y-shaped antibody, blue, looking active and ready to defend\"\n        },\n        {\n          \"name\": \"T-cell defenders\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"represents T-cells, another crucial immune cell type\",\n          \"prompt\": \"flat cartoon icon of a round T-cell, green, with small receptors, looking active and alert\"\n        },\n        {\n          \"name\": \"COVID-19 virus (for neutralization)\",\n          \"style\": \"flat cartoon, minimal medical icon\",\n          \"purpose\": \"represents the real SARS-CoV-2 virus being targeted by the immune system\",\n          \"prompt\": \"simple flat cartoon of a spherical virus, dark red, covered in small spike proteins\"\n        }\n      ]\n    }\n  ]\n}\n```",
   "parsed_response": {
     "segments": [
       {
-        "section_title": "Releasing the Brakes on Triglycerides",
+        "section_title": "The COVID-19 Invader",
         "visual_assets": [
           {
-            "name": "triglyceride molecule",
-            "style": "flat cartoon medical icon",
-            "purpose": "represents fat molecules in the bloodstream",
-            "prompt": "simple flat cartoon triglyceride molecule, small fat droplet shape, yellow-orange color, minimal detail"
+            "name": "COVID-19 virus",
+            "style": "flat cartoon, minimal medical icon",
+            "purpose": "represents the SARS-CoV-2 virus, the invader",
+            "prompt": "simple flat cartoon of a spherical virus, dark red, covered in small spike proteins"
           },
           {
-            "name": "LPL enzyme",
-            "style": "flat cartoon medical icon",
-            "purpose": "represents the enzyme that breaks down triglycerides",
-            "prompt": "simple flat cartoon enzyme icon, active abstract shape, light green, minimal detail"
+            "name": "healthy human cell",
+            "style": "flat cartoon, minimal medical icon",
+            "purpose": "represents a target human cell for infection",
+            "prompt": "simple flat cartoon of a circular human cell, light blue, smooth membrane"
           },
           {
-            "name": "ANGPTL3 protein (brake)",
-            "style": "flat cartoon medical icon",
-            "purpose": "represents the protein that inhibits LPL activity",
-            "prompt": "simple flat cartoon protein icon, mechanical brake symbol, deep red color, minimal detail"
+            "name": "Spike protein key",
+            "style": "flat cartoon icon",
+            "purpose": "illustrates how the spike protein binds to the cell",
+            "prompt": "flat cartoon icon of a key shape, red, representing a virus spike protein"
           },
           {
-            "name": "evinacumab molecule",
-            "style": "flat cartoon medical icon",
-            "purpose": "represents the investigational drug that blocks ANGPTL3",
-            "prompt": "simple flat cartoon medicine molecule icon, unique rounded shape, bright blue color, minimal detail"
+            "name": "cell receptor lock",
+            "style": "flat cartoon icon",
+            "purpose": "illustrates the binding site on a human cell",
+            "prompt": "flat cartoon icon of a lock shape, light blue, integrated into a cell membrane"
+          },
+          {
+            "name": "virus entry arrow",
+            "style": "flat icon",
+            "purpose": "visualizes the virus entering the cell",
+            "prompt": "simple flat cartoon arrow pointing right, blue, indicating movement into a cell"
+          }
+        ]
+      },
+      {
+        "section_title": "Teaching Your Body to Defend",
+        "visual_assets": [
+          {
+            "name": "adenovirus delivery truck",
+            "style": "flat cartoon, minimal medical icon",
+            "purpose": "represents the vaccine's viral vector, delivering instructions",
+            "prompt": "simple flat cartoon of a modified adenovirus, grey and green, resembling a small delivery truck icon"
+          },
+          {
+            "name": "human cell (vaccine target)",
+            "style": "flat cartoon, minimal medical icon",
+            "purpose": "represents the target human cell for vaccine delivery",
+            "prompt": "simple flat cartoon of a circular human cell, light blue, smooth membrane"
+          },
+          {
+            "name": "genetic instructions scroll",
+            "style": "flat cartoon icon",
+            "purpose": "represents the genetic code delivered by the vaccine",
+            "prompt": "flat cartoon icon of a rolled-up scroll or instruction sheet, yellow, symbolizing genetic instructions"
+          },
+          {
+            "name": "isolated spike proteins",
+            "style": "flat cartoon icon",
+            "purpose": "represents the vaccine-induced spike protein production by the cell",
+            "prompt": "multiple small, isolated red spike protein icons, floating freely, simple flat cartoon"
+          }
+        ]
+      },
+      {
+        "section_title": "Ready for Action",
+        "visual_assets": [
+          {
+            "name": "healthy person silhouette",
+            "style": "flat cartoon silhouette",
+            "purpose": "represents the vaccinated individual protected by immunity",
+            "prompt": "simple flat cartoon silhouette of a healthy person, light green, profile view"
+          },
+          {
+            "name": "antibody defenders",
+            "style": "flat medical icon",
+            "purpose": "represents antibodies, key components of the immune response",
+            "prompt": "flat cartoon icon of a Y-shaped antibody, blue, looking active and ready to defend"
+          },
+          {
+            "name": "T-cell defenders",
+            "style": "flat medical icon",
+            "purpose": "represents T-cells, another crucial immune cell type",
+            "prompt": "flat cartoon icon of a round T-cell, green, with small receptors, looking active and alert"
+          },
+          {
+            "name": "COVID-19 virus (for neutralization)",
+            "style": "flat cartoon, minimal medical icon",
+            "purpose": "represents the real SARS-CoV-2 virus being targeted by the immune system",
+            "prompt": "simple flat cartoon of a spherical virus, dark red, covered in small spike proteins"
           }
         ]
       }

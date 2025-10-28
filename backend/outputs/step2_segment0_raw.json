@@ -1,34 +1,92 @@
 {
   "segment_index": 0,
-  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"Understanding High Triglycerides\",\n      \"visual_assets\": [\n        {\n          \"name\": \"triglyceride molecules\",\n          \"style\": \"flat cartoon molecules\",\n          \"purpose\": \"Represents fat energy stores circulating in the blood.\",\n          \"prompt\": \"simple cartoon of small, yellow, blob-like fat molecules, flat colors, no background\"\n        },\n        {\n          \"name\": \"blood vessel\",\n          \"style\": \"flat medical illustration\",\n          \"purpose\": \"Illustrates the circulatory system where triglycerides are transported.\",\n          \"prompt\": \"simple, tubular red blood vessel, flat cartoon style, no complex details, no background\"\n        },\n        {\n          \"name\": \"inflamed pancreas\",\n          \"style\": \"minimal medical icon\",\n          \"purpose\": \"Depicts the organ affected by very high triglycerides, leading to pancreatitis.\",\n          \"prompt\": \"flat cartoon icon of a pancreas, slightly reddish and swollen to show inflammation, no text, no background\"\n        },\n        {\n          \"name\": \"thermometer icon\",\n          \"style\": \"simple medical icon\",\n          \"purpose\": \"Indicates fever or inflammation associated with acute pancreatitis.\",\n          \"prompt\": \"simple flat cartoon thermometer icon, red color bar to show high temperature, no text, no background\"\n        }\n      ]\n    }\n  ]\n}\n```",
+  "raw_response": "```json\n{\n  \"segments\": [\n    {\n      \"section_title\": \"The COVID-19 Invader\",\n      \"visual_assets\": [\n        {\n          \"name\": \"COVID-19 virus\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"Represents the SARS-CoV-2 virus with its characteristic spike proteins.\",\n          \"prompt\": \"simple flat cartoon spherical virus covered in distinct spike proteins, neutral color, minimal detail\"\n        },\n        {\n          \"name\": \"Spike protein key\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"Illustrates the spike protein's role as a 'key' for cell entry.\",\n          \"prompt\": \"flat cartoon icon of a viral spike protein shaped like a simple key, abstract design\"\n        },\n        {\n          \"name\": \"Healthy human cell\",\n          \"style\": \"flat cartoon medical illustration\",\n          \"purpose\": \"Shows a healthy human cell, the target of viral infection.\",\n          \"prompt\": \"simple flat cartoon healthy human cell, light blue, smooth membrane, minimal detail\"\n        },\n        {\n          \"name\": \"Cell receptor lock\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"Visualizes the cell receptor as a 'lock' on the cell surface.\",\n          \"prompt\": \"flat cartoon icon of a cell surface receptor shaped like a simple lock, abstract design\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Teaching Your Body to Defend\",\n      \"visual_assets\": [\n        {\n          \"name\": \"Modified adenovirus\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"Represents the harmless viral vector used in the vaccine as a delivery vehicle.\",\n          \"prompt\": \"simple flat cartoon icon of a modified adenovirus, depicted as a small delivery truck, green, minimal detail\"\n        },\n        {\n          \"name\": \"Genetic instructions\",\n          \"style\": \"flat icon\",\n          \"purpose\": \"Symbolizes the genetic material delivered by the vaccine to human cells.\",\n          \"prompt\": \"flat cartoon icon of a rolled-up scroll or instruction sheet, symbolizing genetic code, simple\"\n        },\n        {\n          \"name\": \"Human cell (producing proteins)\",\n          \"style\": \"flat cartoon medical illustration\",\n          \"purpose\": \"Shows a human cell taking in vaccine instructions and producing spike proteins.\",\n          \"prompt\": \"simple flat cartoon human cell, pale yellow, with internal elements indicating production of small shapes\"\n        },\n        {\n          \"name\": \"Isolated Spike proteins\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"Represents the harmless spike proteins produced by the vaccinated cell.\",\n          \"prompt\": \"multiple small flat cartoon spike protein icons, identical to the virus spike, floating freely\"\n        }\n      ]\n    },\n    {\n      \"section_title\": \"Ready for Action\",\n      \"visual_assets\": [\n        {\n          \"name\": \"Healthy person silhouette\",\n          \"style\": \"minimal outline illustration\",\n          \"purpose\": \"Represents the protected individual after vaccination.\",\n          \"prompt\": \"simple flat cartoon silhouette of a healthy person, neutral color, minimal detail\"\n        },\n        {\n          \"name\": \"Immune defender cells\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"Represents various active immune cells (e.g., T-cells) fighting infection.\",\n          \"prompt\": \"simple flat cartoon icons of generic immune cells, depicted as active 'defenders,' dynamic shapes, blue\"\n        },\n        {\n          \"name\": \"Antibodies\",\n          \"style\": \"flat medical icon\",\n          \"purpose\": \"Shows specific Y-shaped immune proteins that neutralize viruses.\",\n          \"prompt\": \"simple flat cartoon Y-shaped antibody icons, linking to virus, light green\"\n        },\n        {\n          \"name\": \"COVID-19 virus (target)\",\n          \"style\": \"flat cartoon medical icon\",\n          \"purpose\": \"Represents the real virus being targeted and neutralized by the immune system.\",\n          \"prompt\": \"simple flat cartoon spherical virus with spike proteins, same as first segment, minimal detail\"\n        }\n      ]\n    }\n  ]\n}\n```",
   "parsed_response": {
     "segments": [
       {
-        "section_title": "Understanding High Triglycerides",
+        "section_title": "The COVID-19 Invader",
         "visual_assets": [
           {
-            "name": "triglyceride molecules",
-            "style": "flat cartoon molecules",
-            "purpose": "Represents fat energy stores circulating in the blood.",
-            "prompt": "simple cartoon of small, yellow, blob-like fat molecules, flat colors, no background"
+            "name": "COVID-19 virus",
+            "style": "flat cartoon medical icon",
+            "purpose": "Represents the SARS-CoV-2 virus with its characteristic spike proteins.",
+            "prompt": "simple flat cartoon spherical virus covered in distinct spike proteins, neutral color, minimal detail"
           },
           {
-            "name": "blood vessel",
-            "style": "flat medical illustration",
-            "purpose": "Illustrates the circulatory system where triglycerides are transported.",
-            "prompt": "simple, tubular red blood vessel, flat cartoon style, no complex details, no background"
+            "name": "Spike protein key",
+            "style": "flat medical icon",
+            "purpose": "Illustrates the spike protein's role as a 'key' for cell entry.",
+            "prompt": "flat cartoon icon of a viral spike protein shaped like a simple key, abstract design"
           },
           {
-            "name": "inflamed pancreas",
-            "style": "minimal medical icon",
-            "purpose": "Depicts the organ affected by very high triglycerides, leading to pancreatitis.",
-            "prompt": "flat cartoon icon of a pancreas, slightly reddish and swollen to show inflammation, no text, no background"
+            "name": "Healthy human cell",
+            "style": "flat cartoon medical illustration",
+            "purpose": "Shows a healthy human cell, the target of viral infection.",
+            "prompt": "simple flat cartoon healthy human cell, light blue, smooth membrane, minimal detail"
           },
           {
-            "name": "thermometer icon",
-            "style": "simple medical icon",
-            "purpose": "Indicates fever or inflammation associated with acute pancreatitis.",
-            "prompt": "simple flat cartoon thermometer icon, red color bar to show high temperature, no text, no background"
+            "name": "Cell receptor lock",
+            "style": "flat medical icon",
+            "purpose": "Visualizes the cell receptor as a 'lock' on the cell surface.",
+            "prompt": "flat cartoon icon of a cell surface receptor shaped like a simple lock, abstract design"
+          }
+        ]
+      },
+      {
+        "section_title": "Teaching Your Body to Defend",
+        "visual_assets": [
+          {
+            "name": "Modified adenovirus",
+            "style": "flat cartoon medical icon",
+            "purpose": "Represents the harmless viral vector used in the vaccine as a delivery vehicle.",
+            "prompt": "simple flat cartoon icon of a modified adenovirus, depicted as a small delivery truck, green, minimal detail"
+          },
+          {
+            "name": "Genetic instructions",
+            "style": "flat icon",
+            "purpose": "Symbolizes the genetic material delivered by the vaccine to human cells.",
+            "prompt": "flat cartoon icon of a rolled-up scroll or instruction sheet, symbolizing genetic code, simple"
+          },
+          {
+            "name": "Human cell (producing proteins)",
+            "style": "flat cartoon medical illustration",
+            "purpose": "Shows a human cell taking in vaccine instructions and producing spike proteins.",
+            "prompt": "simple flat cartoon human cell, pale yellow, with internal elements indicating production of small shapes"
+          },
+          {
+            "name": "Isolated Spike proteins",
+            "style": "flat medical icon",
+            "purpose": "Represents the harmless spike proteins produced by the vaccinated cell.",
+            "prompt": "multiple small flat cartoon spike protein icons, identical to the virus spike, floating freely"
+          }
+        ]
+      },
+      {
+        "section_title": "Ready for Action",
+        "visual_assets": [
+          {
+            "name": "Healthy person silhouette",
+            "style": "minimal outline illustration",
+            "purpose": "Represents the protected individual after vaccination.",
+            "prompt": "simple flat cartoon silhouette of a healthy person, neutral color, minimal detail"
+          },
+          {
+            "name": "Immune defender cells",
+            "style": "flat medical icon",
+            "purpose": "Represents various active immune cells (e.g., T-cells) fighting infection.",
+            "prompt": "simple flat cartoon icons of generic immune cells, depicted as active 'defenders,' dynamic shapes, blue"
+          },
+          {
+            "name": "Antibodies",
+            "style": "flat medical icon",
+            "purpose": "Shows specific Y-shaped immune proteins that neutralize viruses.",
+            "prompt": "simple flat cartoon Y-shaped antibody icons, linking to virus, light green"
+          },
+          {
+            "name": "COVID-19 virus (target)",
+            "style": "flat cartoon medical icon",
+            "purpose": "Represents the real virus being targeted and neutralized by the immune system.",
+            "prompt": "simple flat cartoon spherical virus with spike proteins, same as first segment, minimal detail"
           }
         ]
       }

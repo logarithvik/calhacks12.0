@@ -85,6 +85,16 @@ export const trialsAPI = {
     return response.data;
   },
 
+  update: async (id, title) => {
+    const formData = new FormData();
+    formData.append('title', title);
+    
+    const response = await api.put(`/api/trials/${id}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  },
+
   getProtocolText: async (id) => {
     const response = await api.get(`/api/trials/${id}/protocol-text`);
     return response.data;
